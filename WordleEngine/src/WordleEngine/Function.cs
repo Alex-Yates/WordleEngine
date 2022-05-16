@@ -7,8 +7,7 @@ namespace WordleEngine{
 
     public class PlayWordle
     {
-
-        public string FunctionHandler(string input, ILambdaContext context)
+        public string Solution(string input, ILambdaContext context)
         {
             return input.ToUpper();
         }
