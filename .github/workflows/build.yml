@@ -16,8 +16,6 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Just getting my bearings
-        run: ls
       - name: Install dependencies
         run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.csproj
       - name: Build
