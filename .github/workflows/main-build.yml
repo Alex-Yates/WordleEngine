@@ -1,0 +1,38 @@
+name: main branch - build, test and publish to AWS
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '3.1.x'
+      - name: Install dependencies
+        run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.csproj
+      - name: Build
+        run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test ./WordleEngine/src/WordleEngine/WordleEngine.csproj --no-restore --verbosity normal
+      - name: Zip up build output
+        run: zip  WordleEngine.zip -r ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1
+      - name: deploy to AWS
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: WordleEngine
+          zip_file: WordleEngine.zip
+          memory_size: 128
+          timeout: 10
+          handler: PlayWordle
+          runtime: dotnetcore3.1
