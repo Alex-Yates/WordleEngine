@@ -8,7 +8,7 @@
   "profile": "",
   "region": "eu-west-1",
   "configuration": "Release",
-  "function-runtime": "dotnet6",
+  "function-runtime": "dotnetcore3.1",
   "function-memory-size": 256,
   "function-timeout": 30,
   "function-handler": "WordleEngine::WordleEngine.PlayWordle::Answer"
