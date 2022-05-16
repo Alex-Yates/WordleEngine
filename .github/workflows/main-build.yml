@@ -26,12 +26,10 @@ jobs:
       - name: Zip up build output
         run: zip  WordleEngine.zip -r ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1
       - name: deploy to AWS
-        uses: appleboy/lambda-action@master
+        uses: yvesgurcan/deploy-lambda-function
         with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          function_name: WordleEngine
-          zip_file: WordleEngine.zip
-          handler: PlayWordle
-          runtime: dotnetcore3.1
+          package: WordleEngine.zip
+          function-name: WordleEngine
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}}
