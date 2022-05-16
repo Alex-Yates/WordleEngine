@@ -26,7 +26,7 @@ jobs:
       - name: Zip up build output
         run: |
           mkdir output
-          cp -a /WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1/. /output/
+          cp -a ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1/ /output/
           zip  -r WordleEngine.zip ./output
       - name: deploy to AWS
         uses: yvesgurcan/deploy-lambda-function@master
