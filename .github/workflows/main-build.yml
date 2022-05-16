@@ -25,7 +25,7 @@ jobs:
         run: dotnet test ./WordleEngine/src/WordleEngine/WordleEngine.csproj --no-restore --verbosity normal
       - name: Zip up build output
         run: |
-          cp -r ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1/. /output/
+          sudo cp -r ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1/. /output/
           zip  -r WordleEngine.zip ./output
       - name: deploy to AWS
         uses: yvesgurcan/deploy-lambda-function@master
