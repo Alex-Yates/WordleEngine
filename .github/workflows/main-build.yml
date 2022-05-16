@@ -23,8 +23,15 @@ jobs:
         run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.csproj --configuration Release --no-restore
       - name: Test
         run: dotnet test ./WordleEngine/src/WordleEngine/WordleEngine.csproj --no-restore --verbosity normal
+      - name: Reading contents of output dir
+        run: |
+          search_dir=/WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1/
+          for entry in "$search_dir"/*
+          do
+            echo "$entry"
+          done
       - name: Zip up build output
-        run: zip  WordleEngine.zip -r ./WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1
+        run: zip  WordleEngine.zip -r /WordleEngine/src/WordleEngine/bin/Release/netcoreapp3.1
       - name: deploy to AWS
         uses: yvesgurcan/deploy-lambda-function@master
         with:
