@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: ['3.0', '3.1.x', '6.0.x' ]
+        dotnet-version: [ '3.1.x', '6.0.x' ]
 
     steps:
       - uses: actions/checkout@v3
@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Just getting my bearings
+        run: ls
       - name: Install dependencies
         run: dotnet restore .\WordleEngine\src\WordleEngine\WordleEngine.csproj
       - name: Build
