@@ -1,6 +1,7 @@
 name: main branch - build, test and publish to AWS
 
 on:
+  workflow_dispatch: 
   push:
     branches:
       - 'main'
