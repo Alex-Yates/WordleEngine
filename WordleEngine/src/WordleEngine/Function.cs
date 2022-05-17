@@ -12,7 +12,10 @@ namespace WordleEngine{
     {
         public string Answer(string input, ILambdaContext context)
         {
-            var legalWords = new List<string> { "hello", "world" };
+            // var legalWords = new List<string> { "hello", "world" };
+
+            var legalWordsFile = File.ReadAllLines(@"wordle-allowed-guesses.txt");
+            var legalWords = new List<string>(legalWordsFile);
 
             var validator = new DataValidator(input, legalWords);
 

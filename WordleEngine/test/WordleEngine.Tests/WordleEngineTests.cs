@@ -5,7 +5,7 @@ using System;
 
 namespace WordleEngine.Tests {
 
-    public class FunctionTest
+    public class DataValidationTests
     {
         [Fact]
         public void TestToLowerFunction()
