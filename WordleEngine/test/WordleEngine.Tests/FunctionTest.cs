@@ -26,7 +26,7 @@ namespace WordleEngine.Tests {
             var context = new TestLambdaContext();
             var legalWord = game.Answer("world", context);
 
-            Assert.Equal("world", legalWord);
+            Assert.Equal("wrong", legalWord);
         }
 
         [Fact]
