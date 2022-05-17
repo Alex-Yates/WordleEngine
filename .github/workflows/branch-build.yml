@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test ./WordleEngine/test/WordleEngine/WordleEngine.Tests.csproj --no-restore --verbosity normal
+        run: dotnet test ./WordleEngine/test/WordleEngine.Tests/WordleEngine.Tests.csproj --no-restore --verbosity normal
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v3
         with:
