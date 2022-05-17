@@ -15,9 +15,8 @@ namespace WordleEngine{
 
         public string ValidateAnswer(string input)
         {
-            var legalWords = new AllowedWordsList();
             input = input.ToLower();
-            if (legalWords.Contains(input)) {
+            if (AllLegalWords.Contains(input)) {
                 return input;
             }
             else {              
