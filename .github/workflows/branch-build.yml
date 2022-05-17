@@ -2,8 +2,8 @@ name: non-main branch - build and test only
 
 on:
   push:
-    branches:
-      - '!main'
+    branches-ignore:
+      - 'main'
 
 jobs:
   build:
