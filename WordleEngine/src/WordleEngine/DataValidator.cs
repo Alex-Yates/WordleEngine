@@ -2,23 +2,28 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class DataValidator {
+namespace WordleEngine{
 
-    public string Answer { get; set; }
-    public List<string> LegalWords { get; }
+    public class DataValidator
+    {
+        public AllowedWordsList AllLegalWords { get; set; }
 
-    public DataValidator(string answer, List<string> legalWords) {
-        this.Answer = answer;
-        this.LegalWords = legalWords;          
-    }
+        public DataValidator()
+        {
+            AllLegalWords = new AllowedWordsList();
+        }
 
-    public string ValidateAnswer(){
-        this.Answer = this.Answer.ToLower();
-        if (!LegalWords.Contains(Answer)) {
-            throw new InvalidOperationException("ERROR: Not a legal word");
-        }   
-        return Answer;
+        public string ValidateAnswer(string input)
+        {
+            var legalWords = new AllowedWordsList();
+            input = input.ToLower();
+            if (legalWords.Contains(input)) {
+                return input;
+            }
+            else {              
+                throw new InvalidOperationException("ERROR: Not a legal word");
+            }
+        }
     }
 }
-
 

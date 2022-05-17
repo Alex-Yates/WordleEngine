@@ -5,58 +5,74 @@ using System;
 
 namespace WordleEngine.Tests {
 
-    public class DataValidationTests
-    {
+    public class AllowedWordsListTests {
+        public AllowedWordsList wordlist = new AllowedWordsList();
+
+        [Fact]
+        public void ContainsFirstWord()
+        {
+            // Checks the first word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("aahed"));
+        }
+
+        [Fact]
+        public void ContainsLastWord()
+        {
+            // Checks the last word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("zymic"));
+        }
+
+        [Fact]
+        public void ContainsCorrectNumberOfWords()
+        {
+            // Checks the total number of words is corect
+            Assert.Equal(10657, wordlist.Count());
+        }
+
+        [Fact]
+        public void DoesNotContainFakeWord()
+        {
+            // Checks the total number of words is corect
+            Assert.False(wordlist.Contains("illegalword"));
+        }
+    }
+
+    public class DataValidationTests {
+        public DataValidator validator = new DataValidator();
+
         [Fact]
         public void TestToLowerFunction()
         {
-            // Invoke the lambda function and confirm the string was lower cased.
-            var game = new PlayWordle();
-            var context = new TestLambdaContext();
-            var upperCase = game.Answer("HELLO", context);
-
-            Assert.Equal("hello", upperCase);
+            // Validator should lower case all inputs
+            Assert.Equal("hello", validator.ValidateAnswer("HELLO"));
         }
 
         [Fact]
         public void TestLegalWord()
         {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var game = new PlayWordle();
-            var context = new TestLambdaContext();
-            var legalWord = game.Answer("world", context);
-
-            Assert.Equal("world", legalWord);
+            // The word "world" should be allowed by the validator
+            Assert.Equal("world", validator.ValidateAnswer("world"));
         }
 
         [Fact]
         public void TestIllegalWord()
         {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var game = new PlayWordle();
-            var context = new TestLambdaContext();
-
-            Assert.Throws<InvalidOperationException>(() => game.Answer("xxxxx", context));
+            // Invalid 5 character strings should be rejected
+            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("xxxxx"));
         }
 
         [Fact]
         public void TestLongWord()
         {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var game = new PlayWordle();
-            var context = new TestLambdaContext();
-
-            Assert.Throws<InvalidOperationException>(() => game.Answer("enormous", context));
+            // Words with more than 5 letters should be rejected
+            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("enormous"));
         }
 
         [Fact]
         public void TestShortWord()
         {
-            // Invoke the lambda function and confirm the string was upper cased.
-            var game = new PlayWordle();
-            var context = new TestLambdaContext();
-
-            Assert.Throws<InvalidOperationException>(() => game.Answer("mini", context));
+            // Words with less than 5 letters should be rejected
+            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("mini"));
         }
     }
 
