@@ -17,7 +17,7 @@ jobs:
         with:
           dotnet-version: '3.1.x'
       - name: Install dependencies
-        run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.csproj
+        run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.sln
       - name: Build
         run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.sln --configuration Release --no-restore
       - name: Test
