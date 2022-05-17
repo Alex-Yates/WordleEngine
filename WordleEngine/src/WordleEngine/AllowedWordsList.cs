@@ -8,7 +8,7 @@ namespace WordleEngine {
     
     public class AllowedWordsList {
 
-        public List<string> AllowedWords { get; set; }
+        private List<string> AllowedWords { get; set; }
 
         public AllowedWordsList() {
             var legalWordsFile = File.ReadAllLines(@"wordle-allowed-guesses.txt");

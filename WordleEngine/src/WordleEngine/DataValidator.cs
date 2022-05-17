@@ -6,7 +6,7 @@ namespace WordleEngine{
 
     public class DataValidator
     {
-        public AllowedWordsList AllLegalWords { get; set; }
+        private AllowedWordsList AllLegalWords { get; set; }
 
         public DataValidator()
         {
