@@ -57,37 +57,47 @@ namespace WordleEngine {
 
         public void ApplyFacts(List<Fact> facts) {
             foreach (Fact fact in facts) {
-                
                 // Position must either be 0 (position irrelavent) or between 1 and 5 (specific position known)
-                if ((fact.Position > 5) or(fact.Position < 0)){
-                    string errorMsg = "Error!: Fact must have position between 0 and 5";
+                if ((fact.Position > 5) || (fact.Position < 0)){
+                    string errorMsg = "Error!: Fact must have position between -1 and 4";
                     throw new InvalidOperationException(errorMsg);
                 }
 
-                DataRow[] rowsToKeep;
+                DataRow[] rowsToKeep = new DataRow[0];
 
                 // Case: where the letter exists but the position is irrelevant
-                if (fact.getPosition() == 1) {
-                    // delete all the words that contain this letter
-                    string expression = "Word.Contains(fact.getLetter)";
+                if ((fact.GetPosition() == 0) && (fact.GetExists())) {
+                    // keep only the words that contain the letter
+                    string expression = "Word LIKE '*" + fact.GetLetter() + "*'";
                     rowsToKeep = this.AllowedWords.Select(expression);
                 }
 
                 // Case: where letter does not exist in any position
-                throw new InvalidOperationException("to do: write this code");
+                if ((fact.GetPosition() == 0) && !(fact.GetExists())) {
+                    // keep only the words that do not contain the letter
+                    string expression = "Word NOT LIKE '*" + fact.GetLetter() + "*'";
+                    rowsToKeep = this.AllowedWords.Select(expression);
+                }
 
                 // Case: where letter exists in a specific position
-                throw new InvalidOperationException("to do: write this code");
+                if ((fact.GetPosition() != 0) && (fact.GetExists())) {
+                    // keep only the words that contain the letter in the specific position
+                    string expression = "SUBSTRING(Word," + fact.GetPosition() + ",1) LIKE '" + fact.GetLetter() + "'";
+                    rowsToKeep = this.AllowedWords.Select(expression);
+                }
 
                 // Case: where letter does not exist in a specific position
-                throw new InvalidOperationException("to do: write this code");
+                if ((fact.GetPosition() != 0) && (fact.GetExists())) {
+                    // keep only the words do not contain the letter in the specific position
+                    string expression = "SUBSTRING(Word," + fact.GetPosition() + ",1) NOT LIKE '" + fact.GetLetter() + "'";
+                    rowsToKeep = this.AllowedWords.Select(expression);
+                }
 
                 // Create new datatable (quicker than iterating through and removing rows individually)
-                DataTable tempDataTable = rowsToKeep.CopyToDataTable;
+                DataTable tempDataTable = rowsToKeep.CopyToDataTable();
                 this.AllowedWords.Clear();
                 this.AllowedWords.Merge(tempDataTable);
                 tempDataTable.Dispose();
-
             }
         }
     }

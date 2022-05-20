@@ -4,27 +4,31 @@ using System.Text;
 
 namespace WordleEngine
 {
-    class Fact
+    public class Fact
     {
         public readonly char Letter;
         public readonly bool Exists;
         public readonly int Position;
 
         public Fact(char letter, bool exists, int position) {
+            if ((position < 0) || (position > 5)) {
+                string errorMsg = "ERROR!: Rule cannot have position " + position + ". Position must be between 0 and 5.";
+                throw new InvalidOperationException(errorMsg);
+            }
             this.Letter = letter;
             this.Exists = exists;
             this.Position = position;
         }
 
-        internal char getLetter() {
+        public char GetLetter() {
             return this.Letter;
         }
 
-        internal bool getExists() {
+        public bool GetExists() {
             return this.Exists;
         }
 
-        internal int getPostition() {
+        public int GetPosition() {
             return this.Position;
         }
     }
