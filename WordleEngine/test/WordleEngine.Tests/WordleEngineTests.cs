@@ -40,7 +40,7 @@ namespace WordleEngine.Tests {
         public void ContainsCorrectNumberOfWords()
         {
             // Checks the total number of words is corect
-            Assert.Equal(10657, wordlist.Count());
+            Assert.Equal(12947, wordlist.Count());
         }
 
         [Fact]
