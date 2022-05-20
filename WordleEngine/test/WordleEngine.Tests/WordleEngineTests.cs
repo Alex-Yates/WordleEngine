@@ -18,14 +18,14 @@ namespace WordleEngine.Tests {
         [Fact]
         public void ContainsHello()
         {
-            // Checks the last word (alphabetically) is in the approved words list
+            // Checks hello exists
             Assert.True(wordlist.Contains("hello"));
         }
 
         [Fact]
         public void ContainsWorld()
         {
-            // Checks the last word (alphabetically) is in the approved words list
+            // Checks world exists
             Assert.True(wordlist.Contains("world"));
         }
 
@@ -64,14 +64,14 @@ namespace WordleEngine.Tests {
         [Fact]
         public void TestFirstLegalWord()
         {
-            // The word "world" should be allowed by the validator
+            // The word "aahed" should be allowed by the validator
             Assert.Equal("aahed", validator.ValidateAnswer("aahed"));
         }
 
         [Fact]
         public void TestLegalWordHello()
         {
-            // The word "world" should be allowed by the validator
+            // The word "hello" should be allowed by the validator
             Assert.Equal("hello", validator.ValidateAnswer("hello"));
         }
 
@@ -85,7 +85,7 @@ namespace WordleEngine.Tests {
         [Fact]
         public void TestLastLegalWord()
         {
-            // The word "world" should be allowed by the validator
+            // The word "zymic" should be allowed by the validator
             Assert.Equal("zymic", validator.ValidateAnswer("zymic"));
         }
 
