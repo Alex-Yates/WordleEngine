@@ -13,8 +13,15 @@ namespace WordleEngine{
         public string Answer(string input, ILambdaContext context)
         {     
             var validator = new DataValidator();
+            string validatedAnswer;
 
-            string validatedAnswer = validator.ValidateAnswer(input);
+            try {
+                validatedAnswer = validator.ValidateAnswer(input);
+            }
+            catch {
+                string errorMessage = "FAILED: \'" + input + "\' is not a legal word.";
+                return errorMessage;
+            }
 
             return validatedAnswer;
         }
