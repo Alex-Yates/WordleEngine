@@ -2,8 +2,8 @@ name: non-main branch - build and test only
 
 on:
   push:
-    branches:
-      - '!main'
+    branches-ignore:
+      - 'main'
 
 jobs:
   build:
@@ -17,8 +17,15 @@ jobs:
         with:
           dotnet-version: '3.1.x'
       - name: Install dependencies
-        run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.csproj
+        run: dotnet restore ./WordleEngine/src/WordleEngine/WordleEngine.sln
       - name: Build
-        run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.csproj --configuration Release --no-restore
+        run: dotnet build ./WordleEngine/src/WordleEngine/WordleEngine.sln --configuration Release --no-restore
       - name: Test
-        run: dotnet test ./WordleEngine/src/WordleEngine/WordleEngine.csproj --no-restore --verbosity normal
+        run: dotnet test ./WordleEngine/test/WordleEngine.Tests/WordleEngine.Tests.csproj --no-restore --verbosity normal --logger trx --results-directory "TestResults"
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-results
+          path: TestResults
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
