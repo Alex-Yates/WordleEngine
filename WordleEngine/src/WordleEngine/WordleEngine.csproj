@@ -15,7 +15,13 @@
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="wordle-allowed-guesses.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="wordle-allowed-guesses.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="wordle-answers-alphabetical.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="wordle-answers-alphabetical.txt">

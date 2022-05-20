@@ -19,8 +19,9 @@ namespace WordleEngine{
             if (AllLegalWords.Contains(input)) {
                 return input;
             }
-            else {              
-                throw new InvalidOperationException("ERROR: Not a legal word");
+            else {
+                string errorMsg = "ERROR: \"" + input + "\" is not a legal word";
+                throw new InvalidOperationException(errorMsg);
             }
         }
     }

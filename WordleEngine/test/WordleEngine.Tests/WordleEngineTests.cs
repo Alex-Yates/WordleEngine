@@ -16,6 +16,20 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
+        public void ContainsHello()
+        {
+            // Checks the last word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ContainsWorld()
+        {
+            // Checks the last word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("world"));
+        }
+
+        [Fact]
         public void ContainsLastWord()
         {
             // Checks the last word (alphabetically) is in the approved words list
@@ -44,14 +58,35 @@ namespace WordleEngine.Tests {
         public void TestToLowerFunction()
         {
             // Validator should lower case all inputs
-            Assert.Equal("hello", validator.ValidateAnswer("HELLO"));
+            Assert.Equal("aahed", validator.ValidateAnswer("AaHed"));
         }
 
         [Fact]
-        public void TestLegalWord()
+        public void TestFirstLegalWord()
+        {
+            // The word "world" should be allowed by the validator
+            Assert.Equal("aahed", validator.ValidateAnswer("aahed"));
+        }
+
+        [Fact]
+        public void TestLegalWordHello()
+        {
+            // The word "world" should be allowed by the validator
+            Assert.Equal("hello", validator.ValidateAnswer("hello"));
+        }
+
+        [Fact]
+        public void TestLegalWordWorld()
         {
             // The word "world" should be allowed by the validator
             Assert.Equal("world", validator.ValidateAnswer("world"));
+        }
+
+        [Fact]
+        public void TestLastLegalWord()
+        {
+            // The word "world" should be allowed by the validator
+            Assert.Equal("zymic", validator.ValidateAnswer("zymic"));
         }
 
         [Fact]
