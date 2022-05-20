@@ -8,8 +8,7 @@ namespace WordleEngine{
     {
         private AllowedWordsList AllLegalWords { get; set; }
 
-        public DataValidator()
-        {
+        public DataValidator() {
             AllLegalWords = new AllowedWordsList();
         }
 
