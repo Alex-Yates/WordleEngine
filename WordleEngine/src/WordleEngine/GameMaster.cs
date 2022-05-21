@@ -42,7 +42,7 @@ namespace WordleEngine
 
                 // Case: letter is not in the word at all
                 else {
-                    Fact matchedLetterRule = new Fact(SecretWord[i], false, -1);
+                    Fact matchedLetterRule = new Fact(guessedWord[i], false, -1);
                     returnFactList.Add(matchedLetterRule);
                 }
             }
