@@ -24,11 +24,12 @@ namespace WordleEngine{
                 throw new InvalidOperationException(errorMsg);
             }
 
+            // Set up the game
             List<string> guesses = new List<string>();
             GameMaster game = new GameMaster(input);
             PlayBot bot = new PlayBot();
 
-
+            // Play the game
             for (int i = 0; i < 5; i++){
                 string guessedWord = bot.ChooseWord();
                 guesses.Add(guessedWord);
@@ -42,6 +43,7 @@ namespace WordleEngine{
                 bot.ApplyFacts(facts);
             }
 
+            // Return the results
             return guesses;
         }
     }
