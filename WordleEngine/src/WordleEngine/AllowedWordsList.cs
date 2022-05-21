@@ -87,7 +87,7 @@ namespace WordleEngine {
                 }
 
                 // Case: where letter does not exist in a specific position
-                if ((fact.GetPosition() != 0) && (fact.GetExists())) {
+                if ((fact.GetPosition() != 0) && !(fact.GetExists())) {
                     // keep only the words do not contain the letter in the specific position
                     string expression = "SUBSTRING(Word," + fact.GetPosition() + ",1) NOT LIKE '" + fact.GetLetter() + "'";
                     rowsToKeep = this.AllowedWords.Select(expression);

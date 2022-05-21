@@ -70,6 +70,30 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
+        public void ApplyFactsCorrectlyRemovesWordsThatContainHInPos1()
+        {
+            // Ensures hello is removed if a fact says no E in position 2
+            AllowedWordsList notH1Wordlist = new AllowedWordsList();
+            Fact notH1 = new Fact('h', false, 1);
+            List<Fact> noH1FactList = new List<Fact>();
+            noH1FactList.Add(notH1);
+            notH1Wordlist.ApplyFacts(noH1FactList);
+            Assert.False(notH1Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyLeavesWordsThatContainHInPos1()
+        {
+            // Ensures hello is not removed if a fact says E in position 2
+            AllowedWordsList h1Wordlist = new AllowedWordsList();
+            Fact yesH1 = new Fact('h', true, 1);
+            List<Fact> yesH1FactList = new List<Fact>();
+            yesH1FactList.Add(yesH1);
+            h1Wordlist.ApplyFacts(yesH1FactList);
+            Assert.True(h1Wordlist.Contains("hello"));
+        }
+
+        [Fact]
         public void ApplyFactsCorrectlyRemovesWordsThatContainEInPos2()
         {
             // Ensures hello is removed if a fact says no E in position 2
@@ -92,6 +116,80 @@ namespace WordleEngine.Tests {
             e2Wordlist.ApplyFacts(yesE2FactList);
             Assert.True(e2Wordlist.Contains("hello"));
         }
+
+        [Fact]
+        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos3()
+        {
+            // Ensures hello is removed if a fact says no E in position 2
+            AllowedWordsList notL3Wordlist = new AllowedWordsList();
+            Fact notL3 = new Fact('l', false, 3);
+            List<Fact> noL3FactList = new List<Fact>();
+            noL3FactList.Add(notL3);
+            notL3Wordlist.ApplyFacts(noL3FactList);
+            Assert.False(notL3Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos3()
+        {
+            // Ensures hello is not removed if a fact says E in position 2
+            AllowedWordsList l3Wordlist = new AllowedWordsList();
+            Fact yesL3 = new Fact('l', true, 3);
+            List<Fact> yesL3FactList = new List<Fact>();
+            yesL3FactList.Add(yesL3);
+            l3Wordlist.ApplyFacts(yesL3FactList);
+            Assert.True(l3Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos4()
+        {
+            // Ensures hello is removed if a fact says no E in position 2
+            AllowedWordsList notL4Wordlist = new AllowedWordsList();
+            Fact notL4 = new Fact('l', false, 4);
+            List<Fact> noL4FactList = new List<Fact>();
+            noL4FactList.Add(notL4);
+            notL4Wordlist.ApplyFacts(noL4FactList);
+            Assert.False(notL4Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos4()
+        {
+            // Ensures hello is not removed if a fact says E in position 2
+            AllowedWordsList l4Wordlist = new AllowedWordsList();
+            Fact yesL4 = new Fact('l', true, 4);
+            List<Fact> yesL4FactList = new List<Fact>();
+            yesL4FactList.Add(yesL4);
+            l4Wordlist.ApplyFacts(yesL4FactList);
+            Assert.True(l4Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyRemovesWordsThatContainOInPos5()
+        {
+            // Ensures hello is removed if a fact says no E in position 2
+            AllowedWordsList notO5Wordlist = new AllowedWordsList();
+            Fact notO5 = new Fact('o', false, 5);
+            List<Fact> noO5FactList = new List<Fact>();
+            noO5FactList.Add(notO5);
+            notO5Wordlist.ApplyFacts(noO5FactList);
+            Assert.False(notO5Wordlist.Contains("hello"));
+        }
+
+        [Fact]
+        public void ApplyFactsCorrectlyLeavesWordsThatContainOInPos5()
+        {
+            // Ensures hello is not removed if a fact says E in position 2
+            AllowedWordsList o5Wordlist = new AllowedWordsList();
+            Fact yesO5 = new Fact('o', true, 5);
+            List<Fact> yesO5FactList = new List<Fact>();
+            yesO5FactList.Add(yesO5);
+            o5Wordlist.ApplyFacts(yesO5FactList);
+            Assert.True(o5Wordlist.Contains("hello"));
+        }
+
+
     }
 
     public class DataValidationTests {
