@@ -30,7 +30,7 @@ namespace WordleEngine{
             PlayBot bot = new PlayBot();
 
             // Play the game
-            for (int i = 0; i < 5; i++){
+            for (int i = 0; i < 6; i++){
                 string guessedWord = bot.ChooseWord();
                 guesses.Add(guessedWord);
                 
