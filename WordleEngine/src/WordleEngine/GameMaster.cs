@@ -19,7 +19,6 @@ namespace WordleEngine
             }
             List<Fact> returnFactList = new List<Fact>();
 
-            // Case, one of the letters is in the correct position
             for (int i = 0; i < 5; i++)
             {
                 // Case: letters is in the correct position
