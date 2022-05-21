@@ -36,6 +36,7 @@ namespace WordleEngine{
                 
                 if (game.GuessWord(guessedWord)) {
                     // The bot won
+                    guesses[i] = guesses[i].ToUpper(); // A bit of flair
                     break;
                 }
 
