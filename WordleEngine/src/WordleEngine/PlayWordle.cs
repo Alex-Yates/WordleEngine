@@ -10,8 +10,9 @@ namespace WordleEngine{
 
     public class PlayWordle
     {
-        public string Answer(string input, ILambdaContext context)
+        public List<string> Answer(string input, ILambdaContext context)
         {     
+            // Cleaning and validating the answer
             var validator = new DataValidator();
             string validatedAnswer;
 
@@ -19,11 +20,29 @@ namespace WordleEngine{
                 validatedAnswer = validator.ValidateAnswer(input);
             }
             catch {
-                string errorMessage = "FAILED: \'" + input + "\' is not a legal word.";
-                return errorMessage;
+                string errorMsg = "FAILED: " + input + " is not a legal word.";
+                throw new InvalidOperationException(errorMsg);
             }
 
-            return validatedAnswer;
+            List<string> guesses = new List<string>();
+            GameMaster game = new GameMaster(input);
+            PlayBot bot = new PlayBot();
+
+
+            for (int i = 0; i < 5; i++){
+                string guessedWord = bot.ChooseWord();
+                guesses.Add(guessedWord);
+                
+                if (game.GuessWord(guessedWord)) {
+                    // The bot won
+                    break;
+                }
+
+                List<Fact> facts = game.GetFacts(guessedWord);
+                bot.ApplyFacts(facts);
+            }
+
+            return guesses;
         }
     }
 }

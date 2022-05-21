@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace WordleEngine {
     
@@ -99,6 +100,13 @@ namespace WordleEngine {
                 this.AllowedWords.Merge(tempDataTable);
                 tempDataTable.Dispose();
             }
+        }
+
+        public string GetTopWord() { 
+            DataRow topRankedWordRow = (DataRow)AllowedWords.Rows.Cast<System.Data.DataRow>().Take(1);
+            string topRankedWord = topRankedWordRow.Field<string>("word");
+
+            return topRankedWord;
         }
     }
 }
