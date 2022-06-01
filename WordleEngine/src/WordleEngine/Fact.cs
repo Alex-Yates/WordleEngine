@@ -11,7 +11,7 @@ namespace WordleEngine
         public readonly int Position;
 
         public Fact(char letter, bool exists, int position) {
-            if ((position < 0) || (position > 5)) {
+            if ((position < -1) || (position > 4)) {
                 string errorMsg = "ERROR!: Rule cannot have position " + position + ". Position must be between 0 and 5.";
                 throw new InvalidOperationException(errorMsg);
             }

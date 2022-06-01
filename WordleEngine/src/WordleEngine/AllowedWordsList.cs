@@ -45,22 +45,20 @@ namespace WordleEngine {
         public void ApplyFacts(List<Fact> facts) {
             foreach (Fact fact in facts) {
                 // Position must either be 0 (position irrelavent) or between 1 and 5 (specific position known)
-                if ((fact.Position > 5) || (fact.Position < 0)){
+                if ((fact.Position > 4) || (fact.Position < -1)){
                     string errorMsg = "Error!: Fact must have position between -1 and 4";
                     throw new InvalidOperationException(errorMsg);
                 }
 
-                DataRow[] rowsToKeep = new DataRow[0];
-
                 // Case: where the letter exists but the position is irrelevant
-                if ((fact.GetPosition() == 0) && (fact.GetExists())) {
+                if ((fact.GetPosition() == -1) && (fact.GetExists())) {
                     // keep only the words that contain the letter
                     List<Word> wordsToKeep = AllowedWords.FindAll(i => i.GetName().Contains(fact.GetLetter()));
                     AllowedWords = wordsToKeep;
                 }
 
                 // Case: where letter does not exist in any position
-                if ((fact.GetPosition() == 0) && !(fact.GetExists())) {
+                if ((fact.GetPosition() == -1) && !(fact.GetExists())) {
                     // keep only the words that do not contain the letter
                     List<Word> wordsToRemove = AllowedWords.FindAll(i => i.GetName().Contains(fact.GetLetter()));
                     foreach (Word wordToRemove in wordsToRemove){
@@ -69,14 +67,14 @@ namespace WordleEngine {
                 }
 
                 // Case: where letter exists in a specific position
-                if ((fact.GetPosition() != 0) && (fact.GetExists())) {
+                if ((fact.GetPosition() != -1) && (fact.GetExists())) {
                     // keep only the words that contain the letter in the specific position
                     List<Word> wordsToKeep = AllowedWords.FindAll(i => i.GetName()[fact.GetPosition()].Equals(fact.GetLetter()));
                     AllowedWords = wordsToKeep;
                 }
 
                 // Case: where letter does not exist in a specific position
-                if ((fact.GetPosition() != 0) && !(fact.GetExists())) {
+                if ((fact.GetPosition() != -1) && !(fact.GetExists())) {
                     // keep only the words do not contain the letter in the specific position
                     List<Word> wordsToRemove = AllowedWords.FindAll(i => i.GetName()[fact.GetPosition()].Equals(fact.GetLetter()));
                     foreach (Word wordToRemove in wordsToRemove) {

@@ -50,7 +50,7 @@ namespace WordleEngine.Tests {
         {
             // Ensures hello is removed if a fact says no E's
             AllowedWordsList notEWordlist = new AllowedWordsList();
-            Fact notE = new Fact('e', false, 0);
+            Fact notE = new Fact('e', false, -1);
             List<Fact> noEFactList = new List<Fact>();
             noEFactList.Add(notE);
             notEWordlist.ApplyFacts(noEFactList);
@@ -62,7 +62,7 @@ namespace WordleEngine.Tests {
         {
             // Ensures hello is not removed if a fact says E's exist
             AllowedWordsList eWordlist = new AllowedWordsList();
-            Fact yesE = new Fact('e', true, 0);
+            Fact yesE = new Fact('e', true, -1);
             List<Fact> yesEFactList = new List<Fact>();
             yesEFactList.Add(yesE);
             eWordlist.ApplyFacts(yesEFactList);
@@ -70,11 +70,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainHInPos1()
+        public void ApplyFactsCorrectlyRemovesWordsThatContainHInPos0()
         {
-            // Ensures hello is removed if a fact says no E in position 2
+            // Ensures hello is removed if a fact says no E in position 0
             AllowedWordsList notH1Wordlist = new AllowedWordsList();
-            Fact notH1 = new Fact('h', false, 1);
+            Fact notH1 = new Fact('h', false, 0);
             List<Fact> noH1FactList = new List<Fact>();
             noH1FactList.Add(notH1);
             notH1Wordlist.ApplyFacts(noH1FactList);
@@ -82,11 +82,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainHInPos1()
+        public void ApplyFactsCorrectlyLeavesWordsThatContainHInPos0()
         {
-            // Ensures hello is not removed if a fact says E in position 2
+            // Ensures hello is not removed if a fact says E in position 0
             AllowedWordsList h1Wordlist = new AllowedWordsList();
-            Fact yesH1 = new Fact('h', true, 1);
+            Fact yesH1 = new Fact('h', true, 0);
             List<Fact> yesH1FactList = new List<Fact>();
             yesH1FactList.Add(yesH1);
             h1Wordlist.ApplyFacts(yesH1FactList);
@@ -94,11 +94,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainEInPos2()
+        public void ApplyFactsCorrectlyRemovesWordsThatContainEInPos1()
         {
-            // Ensures hello is removed if a fact says no E in position 2
+            // Ensures hello is removed if a fact says no E in position 1
             AllowedWordsList notE2Wordlist = new AllowedWordsList();
-            Fact notE2 = new Fact('e', false, 2);
+            Fact notE2 = new Fact('e', false, 1);
             List<Fact> noE2FactList = new List<Fact>();
             noE2FactList.Add(notE2);
             notE2Wordlist.ApplyFacts(noE2FactList);
@@ -106,11 +106,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainEInPos2()
+        public void ApplyFactsCorrectlyLeavesWordsThatContainEInPos1()
         {
-            // Ensures hello is not removed if a fact says E in position 2
+            // Ensures hello is not removed if a fact says E in position 1
             AllowedWordsList e2Wordlist = new AllowedWordsList();
-            Fact yesE2 = new Fact('e', true, 2);
+            Fact yesE2 = new Fact('e', true, 1);
             List<Fact> yesE2FactList = new List<Fact>();
             yesE2FactList.Add(yesE2);
             e2Wordlist.ApplyFacts(yesE2FactList);
@@ -118,11 +118,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos3()
+        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos2()
         {
             // Ensures hello is removed if a fact says no E in position 2
             AllowedWordsList notL3Wordlist = new AllowedWordsList();
-            Fact notL3 = new Fact('l', false, 3);
+            Fact notL3 = new Fact('l', false, 2);
             List<Fact> noL3FactList = new List<Fact>();
             noL3FactList.Add(notL3);
             notL3Wordlist.ApplyFacts(noL3FactList);
@@ -130,11 +130,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos3()
+        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos2()
         {
             // Ensures hello is not removed if a fact says E in position 2
             AllowedWordsList l3Wordlist = new AllowedWordsList();
-            Fact yesL3 = new Fact('l', true, 3);
+            Fact yesL3 = new Fact('l', true, 2);
             List<Fact> yesL3FactList = new List<Fact>();
             yesL3FactList.Add(yesL3);
             l3Wordlist.ApplyFacts(yesL3FactList);
@@ -142,11 +142,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos4()
+        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos3()
         {
-            // Ensures hello is removed if a fact says no E in position 2
+            // Ensures hello is removed if a fact says no E in position 3
             AllowedWordsList notL4Wordlist = new AllowedWordsList();
-            Fact notL4 = new Fact('l', false, 4);
+            Fact notL4 = new Fact('l', false, 3);
             List<Fact> noL4FactList = new List<Fact>();
             noL4FactList.Add(notL4);
             notL4Wordlist.ApplyFacts(noL4FactList);
@@ -154,11 +154,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos4()
+        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos3()
         {
-            // Ensures hello is not removed if a fact says E in position 2
+            // Ensures hello is not removed if a fact says E in position 3
             AllowedWordsList l4Wordlist = new AllowedWordsList();
-            Fact yesL4 = new Fact('l', true, 4);
+            Fact yesL4 = new Fact('l', true, 3);
             List<Fact> yesL4FactList = new List<Fact>();
             yesL4FactList.Add(yesL4);
             l4Wordlist.ApplyFacts(yesL4FactList);
@@ -166,11 +166,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainOInPos5()
+        public void ApplyFactsCorrectlyRemovesWordsThatContainOInPos4()
         {
-            // Ensures hello is removed if a fact says no E in position 2
+            // Ensures hello is removed if a fact says no E in position 4
             AllowedWordsList notO5Wordlist = new AllowedWordsList();
-            Fact notO5 = new Fact('o', false, 5);
+            Fact notO5 = new Fact('o', false, 4);
             List<Fact> noO5FactList = new List<Fact>();
             noO5FactList.Add(notO5);
             notO5Wordlist.ApplyFacts(noO5FactList);
@@ -178,18 +178,16 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainOInPos5()
+        public void ApplyFactsCorrectlyLeavesWordsThatContainOInPos4()
         {
-            // Ensures hello is not removed if a fact says E in position 2
+            // Ensures hello is not removed if a fact says E in position 4
             AllowedWordsList o5Wordlist = new AllowedWordsList();
-            Fact yesO5 = new Fact('o', true, 5);
+            Fact yesO5 = new Fact('o', true, 4);
             List<Fact> yesO5FactList = new List<Fact>();
             yesO5FactList.Add(yesO5);
             o5Wordlist.ApplyFacts(yesO5FactList);
             Assert.True(o5Wordlist.Contains("hello"));
         }
-
-
     }
 
     public class DataValidationTests {
@@ -246,16 +244,40 @@ namespace WordleEngine.Tests {
 
     public class FactTests {
         [Fact]
-        public void TestPositionMinusOneFails() {
+        public void TestPositionMinusTwoFails() {
             // Positions -1 for a Fact should not be allowed
-            Assert.Throws<InvalidOperationException>(() => new Fact('a',true,-1));
+            Assert.Throws<InvalidOperationException>(() => new Fact('a',true,-2));
         }
 
         [Fact]
-        public void TestPositionSixFails()
+        public void TestPositionMinusOnePasses() {
+            // Positions -1 for a Fact should work
+            int pos = -1;
+            Fact f = new Fact('a', true, pos);
+            Assert.Equal(f.GetPosition(), pos);
+        }
+
+        [Fact]
+        public void TestPositionZeroPasses() {
+            // Positions 0 for a Fact should work
+            int pos = 0;
+            Fact f = new Fact('a', true, pos);
+            Assert.Equal(f.GetPosition(), pos);
+        }
+
+        [Fact]
+        public void TestPositionFourPasses() {
+            // Positions 4 for a Fact should work
+            int pos = 4;
+            Fact f = new Fact('a', true, pos);
+            Assert.Equal(f.GetPosition(), pos);
+        }
+
+        [Fact]
+        public void TestPositionFiveFails()
         {
             // Positions 6 for a Fact should not be allowed
-            Assert.Throws<InvalidOperationException>(() => new Fact('a', true, 6));
+            Assert.Throws<InvalidOperationException>(() => new Fact('a', true, 5));
         }
     }
 
