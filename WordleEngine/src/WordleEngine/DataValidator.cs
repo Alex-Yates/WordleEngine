@@ -14,7 +14,7 @@ namespace WordleEngine{
 
         public string ValidateAnswer(string input)
         {
-            input = input.ToLower();
+            input = input.ToUpper();
             if (AllLegalWords.Contains(input)) {
                 return input;
             }

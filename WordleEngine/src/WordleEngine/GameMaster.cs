@@ -9,50 +9,40 @@ namespace WordleEngine
         private readonly string SecretWord;
 
         public GameMaster(string secretWord) {
+            AllowedWordsList allowableWords = new AllowedWordsList();
+            secretWord = secretWord.ToUpper();
+            if (!allowableWords.Contains(secretWord)){
+                var errorMsg = "ERROR! " + secretWord + " is not a legal word!";
+                throw new InvalidOperationException(errorMsg);
+            }
             this.SecretWord = secretWord;
         }
 
-        public List<Fact> GetFacts(string guessedWord) {
-            if (guessedWord.Length != 5) {
-                var errorMsg = "ERROR! You guessed " + guessedWord + " but guesses must have 5 letters!";
+        public string GuessWord(string guessedWord) {
+            guessedWord = guessedWord.ToUpper();
+            AllowedWordsList allowableWords = new AllowedWordsList();
+            if (!allowableWords.Contains(guessedWord)) {
+                var errorMsg = "ERROR! " + guessedWord + " is not a legal word!";
                 throw new InvalidOperationException(errorMsg);
             }
-            List<Fact> returnFactList = new List<Fact>();
 
-            for (int i = 0; i < 5; i++)
-            {
-                // Case: letters is in the correct position
-                if (guessedWord[i] == SecretWord[i])
-                {
-                    Fact matchedLetterRule = new Fact(SecretWord[i], true, i);
-                    returnFactList.Add(matchedLetterRule);
+            string defaultAnswer = "XXXXX";
+
+            char[] answerArray = defaultAnswer.ToCharArray();
+
+            for (int i = 0; i < 5; i++) {
+                if (this.SecretWord.Contains(guessedWord[i])){
+                    answerArray[i] = 'Y';
                 }
-
-                // Case: letter is in the word, but not in the correct position
-                else if (SecretWord.Contains(guessedWord[i]))
+                if (this.SecretWord[i].Equals(guessedWord[i]))
                 {
-                    // The letter exists in the word, but not sure in what position
-                    Fact letterExistsRule = new Fact(guessedWord[i], true, -1);
-                    // The letter does not exist in position i
-                    Fact letterDoesNotExistInThisPosition = new Fact(guessedWord[i], false, i);
-
-                    returnFactList.Add(letterExistsRule);
-                    returnFactList.Add(letterDoesNotExistInThisPosition);
-                }
-
-                // Case: letter is not in the word at all
-                else {
-                    Fact matchedLetterRule = new Fact(guessedWord[i], false, -1);
-                    returnFactList.Add(matchedLetterRule);
+                    answerArray[i] = 'G';
                 }
             }
 
-            return returnFactList;
-        }
+            string actualAnswer = new string(answerArray);
 
-        public bool GuessWord(string guessedWord) {
-            return guessedWord.Equals(this.SecretWord);
+            return actualAnswer;
         }
-
     }
 }

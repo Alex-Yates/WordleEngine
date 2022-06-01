@@ -34,13 +34,15 @@ namespace WordleEngine{
                 string guessedWord = bot.ChooseWord();
                 guesses.Add(guessedWord);
                 
-                if (game.GuessWord(guessedWord)) {
+                string answer = game.GuessWord(guessedWord);
+
+                if (answer.Equals("GGGGG")) {
                     // The bot won
                     guesses[i] = guesses[i].ToUpper(); // A bit of flair
                     break;
                 }
 
-                List<Fact> facts = game.GetFacts(guessedWord);
+                List<Fact> facts = bot.GetFacts(guessedWord, answer);
                 bot.ApplyFacts(facts);
             }
 

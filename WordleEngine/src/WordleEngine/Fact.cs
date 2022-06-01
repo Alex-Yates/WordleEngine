@@ -9,15 +9,44 @@ namespace WordleEngine
         public readonly char Letter;
         public readonly bool Exists;
         public readonly int Position;
+        public readonly int Total;
+        public readonly string Name;
 
-        public Fact(char letter, bool exists, int position) {
+        public Fact(char letter, bool exists, int position, int total) {
             if ((position < -1) || (position > 4)) {
-                string errorMsg = "ERROR!: Rule cannot have position " + position + ". Position must be between 0 and 5.";
+                string errorMsg = "ERROR!: Rule cannot have position " + position + ". Position must be between -1 and 4.";
                 throw new InvalidOperationException(errorMsg);
             }
-            this.Letter = letter;
+
+            if ((total < -1) || (total > 5))
+            {
+                string errorMsg = "ERROR!: Rule cannot have total " + total + ". Total must be between -1 and 5.";
+                throw new InvalidOperationException(errorMsg);
+            }
+
+            this.Letter = Char.ToUpper(letter);
             this.Exists = exists;
             this.Position = position;
+            this.Total = total;
+
+            if (this.Total == -1) {
+                string existsName = " does not exist";
+                if (exists)
+                {
+                    existsName = " exists";
+                }
+
+                string positionName = "";
+                if (position != -1)
+                {
+                    positionName = " in position " + position.ToString();
+                }
+
+                this.Name = letter + existsName + positionName;
+            }
+            else {
+                this.Name = total + "x " + letter + " exist";
+            }
         }
 
         public char GetLetter() {
