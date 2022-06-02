@@ -103,8 +103,10 @@ namespace WordleEngine {
             }
         }
 
-        public string GetTopWord() { 
-            return AllowedWords[0].GetName();
+        public string GetTopWord()
+        {
+
+            return "ALLOWEDWORDSLIST.GETTOPWORD is broken";
         }
     }
 }
