@@ -4,49 +4,122 @@ using Amazon.Lambda.TestUtilities;
 using System;
 using System.Collections.Generic;
 
-namespace WordleEngine.Tests {
+namespace WordleEngine.Tests
+{
 
-    public class AllowedWordsListTests {
+    public class AllowedWordsListTests
+    {
         public AllowedWordsList wordlist = new AllowedWordsList();
 
+
         [Fact]
-        public void ContainsFirstWord() {
+        public void TestsForContainsAndLowestRank()
+        {
+            // To do, write these tests
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void AllowedWordsList_Contains_IncludesFirstWord()
+        {
             // Checks the first word (alphabetically) is in the approved words list
             Assert.True(wordlist.Contains("AAHED"));
         }
 
         [Fact]
-        public void ContainsHello() {
+        public void AllowedWordsList_Contains_IncludesHello()
+        {
             // Checks hello exists
             Assert.True(wordlist.Contains("HELLO"));
         }
 
         [Fact]
-        public void ContainsWorld() {
+        public void AllowedWordsList_Contains_IncludesWorld()
+        {
             // Checks world exists
             Assert.True(wordlist.Contains("WORLD"));
         }
 
         [Fact]
-        public void ContainsLastWord() {
+        public void AllowedWordsList_Contains_IncludesLastWord()
+        {
             // Checks the last word (alphabetically) is in the approved words list
             Assert.True(wordlist.Contains("ZYMIC"));
         }
 
         [Fact]
-        public void ContainsCorrectNumberOfWords() {
+        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForNewAllowedWordsList() {
             // Checks the total number of words is corect
             Assert.Equal(12947, wordlist.Count());
         }
 
         [Fact]
-        public void DoesNotContainFakeWord() {
+        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForAllowedWordsListWithOneWordMissing() {
+            // Checks the total number of words is corect
+            AllowedWordsList reducedlist = new AllowedWordsList();
+            reducedlist.RemoveWord(1);
+            Assert.Equal(12946, reducedlist.Count());
+        }
+
+        [Fact]
+        public void DoesNotContainFakeWord()
+        {
             // Checks the total number of words is corect
             Assert.False(wordlist.Contains("illegalword"));
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainE()
+        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldNotRemoveHello()
+        {
+            // Ensures HELLO is not removed if a fact says no A's
+            AllowedWordsList notAWordlist = new AllowedWordsList();
+            Fact notA = new Fact('a', false, -1, 0);
+            List<Fact> noAFactList = new List<Fact>();
+            noAFactList.Add(notA);
+            notAWordlist.ApplyFacts(noAFactList);
+            Assert.True(notAWordlist.Contains("HELLO"));
+        }
+
+        [Fact]
+        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldRemoveAbout()
+        {
+            // Ensures ABOUT is not removed if a fact says no A's
+            AllowedWordsList notAWordlist = new AllowedWordsList();
+            Fact notA = new Fact('a', false, -1, 0);
+            List<Fact> noAFactList = new List<Fact>();
+            noAFactList.Add(notA);
+            notAWordlist.ApplyFacts(noAFactList);
+            Assert.False(notAWordlist.Contains("ABOUT"));
+        }
+
+        [Fact]
+        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldRemoveHello()
+        {
+            // Ensures HELLO is not removed if a fact says no A's
+            AllowedWordsList notAWordlist = new AllowedWordsList();
+            Fact notA = new Fact('a', true, -1, 1);
+            List<Fact> noAFactList = new List<Fact>();
+            noAFactList.Add(notA);
+            notAWordlist.ApplyFacts(noAFactList);
+            Assert.False(notAWordlist.Contains("HELLO"));
+        }
+
+        [Fact]
+        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldNotRemoveAbout()
+        {
+            // Ensures ABOUT is not removed if a fact says no A's
+            AllowedWordsList notAWordlist = new AllowedWordsList();
+            Fact notA = new Fact('a', true, -1, 1);
+            List<Fact> noAFactList = new List<Fact>();
+            noAFactList.Add(notA);
+            notAWordlist.ApplyFacts(noAFactList);
+            Assert.True(notAWordlist.Contains("ABOUT"));
+        }
+
+        /*
+
+        [Fact]
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainE()
         {
             // Ensures hello is removed if a fact says no E's
             AllowedWordsList notEWordlist = new AllowedWordsList();
@@ -58,11 +131,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainE()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainE()
         {
             // Ensures hello is not removed if a fact says E's exist
             AllowedWordsList eWordlist = new AllowedWordsList();
-            Fact yesE = new Fact('e', true, -1, -1);
+            Fact yesE = new Fact('a', true, -1, -1);
             List<Fact> yesEFactList = new List<Fact>();
             yesEFactList.Add(yesE);
             eWordlist.ApplyFacts(yesEFactList);
@@ -70,7 +143,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainHInPos0()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainHInPos0()
         {
             // Ensures hello is removed if a fact says no E in position 0
             AllowedWordsList notH1Wordlist = new AllowedWordsList();
@@ -82,7 +155,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainHInPos0()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainHInPos0()
         {
             // Ensures hello is not removed if a fact says E in position 0
             AllowedWordsList h1Wordlist = new AllowedWordsList();
@@ -94,7 +167,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainEInPos1()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainEInPos1()
         {
             // Ensures hello is removed if a fact says no E in position 1
             AllowedWordsList notE2Wordlist = new AllowedWordsList();
@@ -106,7 +179,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainEInPos1()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainEInPos1()
         {
             // Ensures hello is not removed if a fact says E in position 1
             AllowedWordsList e2Wordlist = new AllowedWordsList();
@@ -118,7 +191,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos2()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainLInPos2()
         {
             // Ensures hello is removed if a fact says no E in position 2
             AllowedWordsList notL3Wordlist = new AllowedWordsList();
@@ -130,7 +203,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos2()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainLInPos2()
         {
             // Ensures hello is not removed if a fact says E in position 2
             AllowedWordsList l3Wordlist = new AllowedWordsList();
@@ -142,7 +215,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainLInPos3()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainLInPos3()
         {
             // Ensures hello is removed if a fact says no E in position 3
             AllowedWordsList notL4Wordlist = new AllowedWordsList();
@@ -154,7 +227,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainLInPos3()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainLInPos3()
         {
             // Ensures hello is not removed if a fact says E in position 3
             AllowedWordsList l4Wordlist = new AllowedWordsList();
@@ -166,7 +239,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesWordsThatContainOInPos4()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainOInPos4()
         {
             // Ensures hello is removed if a fact says no E in position 4
             AllowedWordsList notO5Wordlist = new AllowedWordsList();
@@ -178,7 +251,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesWordsThatContainOInPos4()
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainOInPos4()
         {
             // Ensures hello is not removed if a fact says E in position 4
             AllowedWordsList o5Wordlist = new AllowedWordsList();
@@ -189,8 +262,10 @@ namespace WordleEngine.Tests {
             Assert.True(o5Wordlist.Contains("HELLO"));
         }
 
+        */
+
         [Fact]
-        public void ApplyFactsCorrectlyRemovesAddedWhenZeroDs()
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenZeroDs()
         {
             bool testPass = true;
             string failMsg = "";
@@ -201,7 +276,8 @@ namespace WordleEngine.Tests {
             List<Fact> noDFactList = new List<Fact>();
             noDFactList.Add(noD);
             noDWordList.ApplyFacts(noDFactList);
-            if (noDWordList.Contains("ADDED")) {
+            if (noDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Failed to remove ADDED when total Ds was 0. ";
                 testPass = false;
             }
@@ -209,17 +285,19 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesAddedWhenOneD() {
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenOneD()
+        {
             bool testPass = true;
             string failMsg = "";
-            
+
             // Checks ADDED is removed if a fact says one D
             AllowedWordsList oneDWordList = new AllowedWordsList();
             Fact oneD = new Fact('D', true, -1, 1);
             List<Fact> oneDFactList = new List<Fact>();
             oneDFactList.Add(oneD);
             oneDWordList.ApplyFacts(oneDFactList);
-            if (oneDWordList.Contains("ADDED")) {
+            if (oneDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Failed to remove ADDED when total Ds was 1. ";
                 testPass = false;
             }
@@ -227,7 +305,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesAddedWhenTwoDs() {
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenTwoDs()
+        {
             bool testPass = true;
             string failMsg = "";
 
@@ -237,7 +316,8 @@ namespace WordleEngine.Tests {
             List<Fact> twoDFactList = new List<Fact>();
             twoDFactList.Add(twoD);
             twoDWordList.ApplyFacts(twoDFactList);
-            if (twoDWordList.Contains("ADDED")) {
+            if (twoDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Failed to remove ADDED when total Ds was 2. ";
                 testPass = false;
             }
@@ -245,17 +325,19 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyLeavesAddedWhenThreeDs() {
+        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesAddedWhenThreeDs()
+        {
             bool testPass = true;
             string failMsg = "";
-            
+
             // Checks ADDED is NOT removed if a fact says three Ds
             AllowedWordsList threeDWordList = new AllowedWordsList();
             Fact threeD = new Fact('D', true, -1, 3);
             List<Fact> threeDFactList = new List<Fact>();
             threeDFactList.Add(threeD);
             threeDWordList.ApplyFacts(threeDFactList);
-            if (!threeDWordList.Contains("ADDED")) {
+            if (!threeDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Remove ADDED when total Ds was 3. ";
                 testPass = false;
             }
@@ -263,7 +345,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesAddedWhenFourDs(){
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenFourDs()
+        {
             bool testPass = true;
             string failMsg = "";
 
@@ -273,7 +356,8 @@ namespace WordleEngine.Tests {
             List<Fact> fourDFactList = new List<Fact>();
             fourDFactList.Add(fourD);
             fourDWordList.ApplyFacts(fourDFactList);
-            if (fourDWordList.Contains("ADDED")) {
+            if (fourDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Failed to remove ADDED when total Ds was 4. ";
                 testPass = false;
             }
@@ -281,7 +365,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void ApplyFactsCorrectlyRemovesAddedWhenFiveDs(){
+        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenFiveDs()
+        {
             bool testPass = true;
             string failMsg = "";
             // Checks ADDED is removed if a fact says five Ds
@@ -290,7 +375,8 @@ namespace WordleEngine.Tests {
             List<Fact> fiveDFactList = new List<Fact>();
             fiveDFactList.Add(fiveD);
             fiveDWordList.ApplyFacts(fiveDFactList);
-            if (fiveDWordList.Contains("ADDED")) {
+            if (fiveDWordList.Contains("ADDED"))
+            {
                 failMsg = failMsg + "Failed to remove ADDED when total Ds was 5. ";
                 testPass = false;
             }
@@ -299,67 +385,79 @@ namespace WordleEngine.Tests {
         }
     }
 
-    public class DataValidatorTests {
+    public class DataValidatorTests
+    {
         public DataValidator validator = new DataValidator();
 
         [Fact]
-        public void TestToUpperFunction() {
+        public void TestToUpperFunction()
+        {
             // Validator should lower case all inputs
             Assert.Equal("AAHED", validator.ValidateAnswer("AaHed"));
         }
 
         [Fact]
-        public void TestFirstLegalWord() {
+        public void TestFirstLegalWord()
+        {
             // The word "aahed" should be allowed by the validator
             Assert.Equal("AAHED", validator.ValidateAnswer("aahed"));
         }
 
         [Fact]
-        public void TestLegalWordHello() {
+        public void TestLegalWordHello()
+        {
             // The word "hello" should be allowed by the validator
             Assert.Equal("HELLO", validator.ValidateAnswer("hello"));
         }
 
         [Fact]
-        public void TestLegalWordWorld() {
+        public void TestLegalWordWorld()
+        {
             // The word "world" should be allowed by the validator
             Assert.Equal("WORLD", validator.ValidateAnswer("world"));
         }
 
         [Fact]
-        public void TestLastLegalWord() {
+        public void TestLastLegalWord()
+        {
             // The word "zymic" should be allowed by the validator
             Assert.Equal("ZYMIC", validator.ValidateAnswer("zymic"));
         }
 
         [Fact]
-        public void TestIllegalWord() {
+        public void TestIllegalWord()
+        {
             // Invalid 5 character strings should be rejected
             Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("xxxxx"));
         }
 
         [Fact]
-        public void TestLongWord() {
+        public void TestLongWord()
+        {
             // Words with more than 5 letters should be rejected
             Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("enormous"));
         }
 
         [Fact]
-        public void TestShortWord() {
+        public void TestShortWord()
+        {
             // Words with less than 5 letters should be rejected
             Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("mini"));
         }
     }
 
-    public class FactTests {
+    public class FactTests
+    {
         [Fact]
-        public void TestPositionMinusTwoFails() {
+        public void TestPositionMinusTwoFails()
+        {
             // Positions -1 for a Fact should not be allowed
-            Assert.Throws<InvalidOperationException>(() => new Fact('a',true,-2, -1));
+            Assert.Throws<InvalidOperationException>(() => new Fact('a', true, -2, -1));
         }
 
         [Fact]
-        public void TestPositionMinusOnePasses() {
+        public void TestPositionMinusOnePasses()
+        {
             // Positions -1 for a Fact should work
             int pos = -1;
             Fact f = new Fact('a', true, pos, -1);
@@ -367,7 +465,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void TestPositionZeroPasses() {
+        public void TestPositionZeroPasses()
+        {
             // Positions 0 for a Fact should work
             int pos = 0;
             Fact f = new Fact('a', true, pos, -1);
@@ -375,7 +474,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void TestPositionFourPasses() {
+        public void TestPositionFourPasses()
+        {
             // Positions 4 for a Fact should work
             int pos = 4;
             Fact f = new Fact('a', true, pos, -1);
@@ -390,16 +490,19 @@ namespace WordleEngine.Tests {
         }
     }
 
-    public class GameMasterTests {
+    public class GameMasterTests
+    {
         [Fact]
-        public void GameMasterCannotBeCreatedWithALongWord() {
+        public void GameMasterCannotBeCreatedWithALongWord()
+        {
 
 
             Assert.Throws<InvalidOperationException>(() => new GameMaster("illegalWord"));
         }
 
         [Fact]
-        public void GameMasterCannotBeCreatedWithAShortWord() {
+        public void GameMasterCannotBeCreatedWithAShortWord()
+        {
             Assert.Throws<InvalidOperationException>(() => new GameMaster("oops"));
         }
 
@@ -410,7 +513,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMasterGuessWordIsGGGGGIfCorrect() {
+        public void GameMasterGuessWordIsGGGGGIfCorrect()
+        {
             string secretWord = "hello";
             string guessedWord = "hello";
             string expectedAnswer = "GGGGG";
@@ -422,7 +526,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMasterGuessWordIsXXXXXIfNoMatches() {
+        public void GameMasterGuessWordIsXXXXXIfNoMatches()
+        {
             string secretWord = "super";
             string guessedWord = "latch";
             string expectedAnswer = "XXXXX";
@@ -433,14 +538,16 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMasterGuessWordThrowsErrorIfIllegalWord() {
+        public void GameMasterGuessWordThrowsErrorIfIllegalWord()
+        {
             GameMaster gm = new GameMaster("right");
             Assert.Throws<InvalidOperationException>(() => gm.GuessWord("rrong"));
         }
     }
 
 
-    public class PlayBotTests {
+    public class PlayBotTests
+    {
         [Fact]
         public void PlaybotGetFactsThrowsErrorIfIllegalWord()
         {
@@ -448,7 +555,8 @@ namespace WordleEngine.Tests {
             Assert.Throws<InvalidOperationException>(() => bot.GetFacts("rrong", "XXXXX"));
         }
 
-        public string CheckForPlayBotGetFactsErrors(string guessedWord, string expectedPattern, string[] expectedFacts) {
+        public string CheckForPlayBotGetFactsErrors(string guessedWord, string expectedPattern, string[] expectedFacts)
+        {
             // setup
             bool passed = true;
             string returnMsg = "";
@@ -458,23 +566,28 @@ namespace WordleEngine.Tests {
             List<Fact> facts = bot.GetFacts(guessedWord, expectedPattern);
 
             // Checking the total number of facts matches
-            if (facts.Count != expectedFacts.Length){
+            if (facts.Count != expectedFacts.Length)
+            {
                 returnMsg = returnMsg + "Expected " + expectedFacts.Length + " facts but had " + facts.Count + "; ";
                 passed = false;
             }
 
             // Checking all the expected facts exist
-            foreach (string factName in expectedFacts){
-                if (!facts.Exists(i => i.Name.Equals(factName))) {
+            foreach (string factName in expectedFacts)
+            {
+                if (!facts.Exists(i => i.Name.Equals(factName)))
+                {
                     returnMsg = returnMsg + "Missing fact: " + factName + "; ";
                     passed = false;
                 }
             }
 
             // if failed, adding the actual facts to the return message
-            if (!passed) {
+            if (!passed)
+            {
                 returnMsg = returnMsg + "Actual facts are: ";
-                foreach (Fact fact in facts) {
+                foreach (Fact fact in facts)
+                {
                     returnMsg = returnMsg + fact.Name + "; ";
                 }
             }
@@ -484,7 +597,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXXPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXXXXXPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "XXXXX";
             string[] expectedFacts = {
@@ -499,7 +613,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForYXXXXPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForYXXXXPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "YXXXX";
             string[] expectedFacts = {
@@ -515,7 +630,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForGXXXYPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForGXXXYPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "GXXXY";
             string[] expectedFacts = {
@@ -531,7 +647,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXYXXPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXXYXXPattern()
+        {
             string guessedWord = "WORLD";
             string expectedPattern = "XXYXX";
             string[] expectedFacts = {
@@ -548,7 +665,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXGXXPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXXGXXPattern()
+        {
             string guessedWord = "WORLD";
             string expectedPattern = "XXGXX";
             string[] expectedFacts = {
@@ -564,7 +682,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXYPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXXXXYPattern()
+        {
             string guessedWord = "WORLD";
             string expectedPattern = "XXXXY";
             string[] expectedFacts = {
@@ -581,7 +700,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXGPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXXXXGPattern()
+        {
             string guessedWord = "WORLD";
             string expectedPattern = "XXXXG";
             string[] expectedFacts = {
@@ -597,7 +717,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXYXGXPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForXYXGXPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "XYXGX";
             string[] expectedFacts = {
@@ -614,7 +735,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForYYYYYPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForYYYYYPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "YYYYY";
             string[] expectedFacts = {
@@ -623,8 +745,8 @@ namespace WordleEngine.Tests {
                 "E exists",
                 "E does not exist in position 1",
                 "L exists",
-                "L does not exist in position 2",                
-                "L does not exist in position 3",                
+                "L does not exist in position 2",
+                "L does not exist in position 3",
                 "O exists",
                 "O does not exist in position 4"
             };
@@ -634,7 +756,8 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForGGGGGPattern() {
+        public void PlaybotGetFactsReturnsCorrectFactsForGGGGGPattern()
+        {
             string guessedWord = "HELLO";
             string expectedPattern = "GGGGG";
             string[] expectedFacts = {
@@ -667,5 +790,36 @@ namespace WordleEngine.Tests {
             Assert.True(failureMessage.Equals(""), failureMessage);
         }
     }
-}
 
+    public class WordTests
+    {
+        Word hello = new Word(1, "HELLO", 50);
+
+        [Fact]
+        public void Word_GetRank_TestCaseShouldBe1() {
+            Assert.Equal(1, hello.GetRank());
+        }
+
+        [Fact]
+        public void Word_GetName_TestCaseShouldBeHELLO() {
+            Assert.True(hello.GetName().Equals("HELLO"));
+        }
+
+        [Fact]
+        public void Word_GetPrevelance_TestCaseShouldBe50() {
+            Assert.Equal(50, hello.GetPrevelance());
+        }
+
+        [Fact]
+        public void Word_Equals_ToDo_WriteThisTest() {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Word_GetHashCode_ToDo_WriteThisTest()
+        {
+            Assert.True(false);
+        }
+    }
+
+}

@@ -16,13 +16,11 @@ namespace WordleEngine
             this.RemainingWords = new AllowedWordsList();
         }
 
-        public string ChooseWord() {
-            // For now, just picks the highest ranked remaining word.
-
-            string chosenWord = RemainingWords.GetTopWord();
-
+        public Word ChooseWord() {
             // To do, build the actual engine part here
-            return chosenWord;
+
+            // For now, just picks the lowest ranked remaining word
+            return RemainingWords.GetLowestRankedWord();
         }
 
         // To whittle down the potential answers, based on some known facts
@@ -104,8 +102,14 @@ namespace WordleEngine
                         }
                     }
 
+
                     // The solution has X of this letter
                     Fact solutionHasXCharsOfThisTypeRule = new Fact(letter, true, -1, numberOfThisLetterInSolution);
+
+                    // If there are zero of the letter, flipping "exists" from true to false
+                    if (numberOfThisLetterInSolution == 0) {
+                        solutionHasXCharsOfThisTypeRule = new Fact(letter, false, -1, 0);
+                    }
                     
                     // if the fact does not already exist, add them.
                     if (!returnFactList.Exists(i => i.Name.Equals(solutionHasXCharsOfThisTypeRule.Name)))
@@ -116,6 +120,10 @@ namespace WordleEngine
             }
 
             return returnFactList;
+        }
+
+        public int GetNumRemainingPossibleAnswers() {
+            return this.RemainingWords.Count();
         }
     }
 }

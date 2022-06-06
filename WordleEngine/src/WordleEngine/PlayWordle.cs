@@ -1,7 +1,10 @@
 using Amazon.Lambda.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -10,7 +13,7 @@ namespace WordleEngine{
 
     public class PlayWordle
     {
-        public List<string> Answer(string input, ILambdaContext context)
+        public string Answer(string input, ILambdaContext context)
         {     
             // Cleaning and validating the answer
             var validator = new DataValidator();
@@ -21,33 +24,38 @@ namespace WordleEngine{
             }
             catch {
                 string errorMsg = "FAILED: " + input + " is not a legal word.";
-                throw new InvalidOperationException(errorMsg);
+                return errorMsg;
             }
 
             // Set up the game
-            List<string> guesses = new List<string>();
+            List<Guess> guesses = new List<Guess>();
             GameMaster game = new GameMaster(input);
             PlayBot bot = new PlayBot();
 
             // Play the game
             for (int i = 0; i < 6; i++){
-                string guessedWord = bot.ChooseWord();
-                guesses.Add(guessedWord);
+                Word guessedWord = bot.ChooseWord();
                 
-                string answer = game.GuessWord(guessedWord);
+                string answer = game.GuessWord(guessedWord.GetName());
+
+                List<Fact> facts = bot.GetFacts(guessedWord.GetName(), answer);
+                bot.ApplyFacts(facts);
+
+                string thisWordName = guessedWord.GetName();
+                int numRemaining = bot.GetNumRemainingPossibleAnswers();
+                Guess thisGuess = new Guess(thisWordName, answer, numRemaining);
+
+                guesses.Add(thisGuess);
 
                 if (answer.Equals("GGGGG")) {
-                    // The bot won
-                    guesses[i] = guesses[i].ToUpper(); // A bit of flair
                     break;
                 }
-
-                List<Fact> facts = bot.GetFacts(guessedWord, answer);
-                bot.ApplyFacts(facts);
             }
 
             // Return the results
-            return guesses;
+            string json = JsonConvert.SerializeObject(guesses);
+            Console.WriteLine(json);
+            return json;
         }
     }
 }

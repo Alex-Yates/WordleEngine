@@ -26,8 +26,8 @@ namespace WordleEngine
 
             this.Letter = Char.ToUpper(letter);
             this.Exists = exists;
-            this.Position = position;
-            this.Total = total;
+            this.Position = position;  // Zero based. 0 is the first letter of the word. -1 means not sure what position.
+            this.Total = total; // The number of a given letter. Hence, if 1, there is one of the letter in the word. If 0, there are none of this letter. -1 means "ignore this field"
 
             if (this.Total == -1) {
                 string existsName = " does not exist";

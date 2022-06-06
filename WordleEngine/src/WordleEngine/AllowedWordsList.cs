@@ -23,9 +23,10 @@ namespace WordleEngine {
 
             while (!sr.EndOfStream) {
                 string[] row = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                int rank = int.Parse(row[0]);
                 string text = row[1];
                 int prevalence = int.Parse(row[2]);
-                Word word = new Word(text, prevalence);
+                Word word = new Word(rank, text, prevalence);
                 wordList.Add(word);
             }
 
@@ -37,9 +38,25 @@ namespace WordleEngine {
             return (matchingWords.Count == 1);
         }
 
-        public int Count()
-        {
+        public int Count() {
             return AllowedWords.Count;
+        }
+
+        public Word GetLowestRankedWord() {
+            try { 
+                int minRank = this.AllowedWords.Select(word => word.GetRank()).Min();
+                return this.AllowedWords.FirstOrDefault(x => x.GetRank() == minRank);
+            }
+            catch {
+                int numWords = this.AllowedWords.Count;
+                string errorMsg = "Error!: Failed to get top ranking word. There are " + numWords + " words in the list.";
+                throw new InvalidOperationException(errorMsg);
+            }
+        }
+
+        public bool RemoveWord(int id) {
+            Word wordToRemove = this.AllowedWords[id];
+             return this.AllowedWords.Remove(wordToRemove);
         }
 
         public void ApplyFacts(List<Fact> facts) {
@@ -101,12 +118,6 @@ namespace WordleEngine {
                     AllowedWords = wordsToKeep;
                 }
             }
-        }
-
-        public string GetTopWord()
-        {
-
-            return "ALLOWEDWORDSLIST.GETTOPWORD is broken";
         }
     }
 }
