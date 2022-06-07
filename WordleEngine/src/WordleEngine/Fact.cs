@@ -60,5 +60,9 @@ namespace WordleEngine
         public int GetPosition() {
             return this.Position;
         }
+
+        public int GetTotal() {
+            return this.Total;
+        }
     }
 }

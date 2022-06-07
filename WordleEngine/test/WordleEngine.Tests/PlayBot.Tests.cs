@@ -4,9 +4,34 @@ using System.Text;
 using Xunit;
 
 namespace WordleEngine.Tests {
-    public class PlayBotTests {
+    public class PlayBot_GetTopFiveWords_Tests {
         [Fact]
-        public void PlaybotGetFactsThrowsErrorIfIllegalWord() {
+        public void Playbot_GetTopFiveWords_PicksTheTopFiveWords() {
+            PlayBot bot = new PlayBot();
+            
+            List<Word> top5 = bot.GetTopFiveWords();
+
+            string[] expected = { "ABOUT", "OTHER", "WHICH", "THEIR", "THERE" };
+            string[] actual = { top5[0].GetName(), top5[1].GetName(), top5[2].GetName(), top5[3].GetName(), top5[4].GetName() };
+
+            Assert.Equal(actual, expected);
+        }
+    }
+
+    public class PlayBot_GetNumRemainingPossibleAnswers_Tests {
+        [Fact]
+        public void Playbot_GetNumRemainingPossibleAnswers_NewBotHas12947PossibleAnswers() {
+            PlayBot bot = new PlayBot();
+
+            int numRemainingPossibleAnswers = bot.GetNumRemainingPossibleAnswers();
+
+            Assert.True(numRemainingPossibleAnswers == 12947);
+        }
+    }
+
+    public class PlayBot_GetFacts_Tests {
+        [Fact]
+        public void Playbot_GetFacts_ThrowsErrorIfIllegalWord() {
             PlayBot bot = new PlayBot();
             Assert.Throws<InvalidOperationException>(() => bot.GetFacts("rrong", "XXXXX"));
         }
@@ -47,7 +72,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXXPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXXPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "XXXXX";
             string[] expectedFacts = {
@@ -62,7 +87,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForYXXXXPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForYXXXXPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "YXXXX";
             string[] expectedFacts = {
@@ -78,7 +103,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForGXXXYPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForGXXXYPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "GXXXY";
             string[] expectedFacts = {
@@ -94,7 +119,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXYXXPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXXYXXPattern() {
             string guessedWord = "WORLD";
             string expectedPattern = "XXYXX";
             string[] expectedFacts = {
@@ -111,7 +136,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXGXXPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXXGXXPattern() {
             string guessedWord = "WORLD";
             string expectedPattern = "XXGXX";
             string[] expectedFacts = {
@@ -127,7 +152,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXYPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXYPattern() {
             string guessedWord = "WORLD";
             string expectedPattern = "XXXXY";
             string[] expectedFacts = {
@@ -144,7 +169,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXXXXGPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXGPattern() {
             string guessedWord = "WORLD";
             string expectedPattern = "XXXXG";
             string[] expectedFacts = {
@@ -160,7 +185,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForXYXGXPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForXYXGXPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "XYXGX";
             string[] expectedFacts = {
@@ -177,7 +202,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForYYYYYPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForYYYYYPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "YYYYY";
             string[] expectedFacts = {
@@ -197,7 +222,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsForGGGGGPattern() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsForGGGGGPattern() {
             string guessedWord = "HELLO";
             string expectedPattern = "GGGGG";
             string[] expectedFacts = {
@@ -213,7 +238,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void PlaybotGetFactsReturnsCorrectFactsWithDoubleLetters() {
+        public void Playbot_GetFacts_ReturnsCorrectFactsWithDoubleLetters() {
             string guessedWord = "HELLO";
             string expectedPattern = "XXXYX";
             string[] expectedFacts = {

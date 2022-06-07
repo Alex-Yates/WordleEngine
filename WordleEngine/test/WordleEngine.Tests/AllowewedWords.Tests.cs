@@ -5,382 +5,343 @@ using Xunit;
 
 namespace WordleEngine.Tests
 {
-    public class AllowewedWords_Contains_Tests
-    {
+    public class AllowewedWords_Contains_Tests {
         public AllowedWordsList wordlist = new AllowedWordsList();
 
         [Fact]
-        public void TestsForContainsAndLowestRank()
-        {
-            // To do, write these tests
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void AllowedWordsList_Contains_IncludesFirstWord()
-        {
+        public void AllowedWordsList_Contains_IncludesFirstWordAlphabetically() {
             // Checks the first word (alphabetically) is in the approved words list
             Assert.True(wordlist.Contains("AAHED"));
         }
 
         [Fact]
-        public void AllowedWordsList_Contains_IncludesHello()
-        {
-            // Checks hello exists
-            Assert.True(wordlist.Contains("HELLO"));
+        public void AllowedWordsList_Contains_IncludesFirstWordByRank() {
+            // Checks the first word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("ABOUT"));
         }
 
         [Fact]
-        public void AllowedWordsList_Contains_IncludesWorld()
-        {
-            // Checks world exists
-            Assert.True(wordlist.Contains("WORLD"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_Contains_IncludesLastWord()
-        {
+        public void AllowedWordsList_Contains_IncludesLastWordAlphabetically() {
             // Checks the last word (alphabetically) is in the approved words list
             Assert.True(wordlist.Contains("ZYMIC"));
         }
 
         [Fact]
-        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForNewAllowedWordsList()
-        {
+        public void AllowedWordsList_Contains_IncludesLastWordByRank() {
+            // Checks the last word (alphabetically) is in the approved words list
+            Assert.True(wordlist.Contains("AAHED"));
+        }
+
+        [Fact]
+        public void AllowedWordsList_Contains_DoesNotContainFakeWord() {
             // Checks the total number of words is corect
+            Assert.False(wordlist.Contains("illegalword"));
+        }
+    }
+
+    public class AllowewedWords_Count_Tests {
+        [Fact]
+        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForNewAllowedWordsList() {
+            // Checks the total number of words is corect
+            AllowedWordsList wordlist = new AllowedWordsList();
             Assert.Equal(12947, wordlist.Count());
         }
 
         [Fact]
-        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForAllowedWordsListWithOneWordMissing()
-        {
+        public void AllowedWordsList_Count_ReturnsCorrectNumberOfWordsForAllowedWordsListWithOneWordMissing() {
             // Checks the total number of words is corect
             AllowedWordsList reducedlist = new AllowedWordsList();
             reducedlist.RemoveWord(1);
             Assert.Equal(12946, reducedlist.Count());
         }
+    }
 
+    public class AllowewedWords_GetLowestRankedWord_Tests {
         [Fact]
-        public void DoesNotContainFakeWord()
-        {
-            // Checks the total number of words is corect
-            Assert.False(wordlist.Contains("illegalword"));
+        public void AllowedWordsList_GetLowestRankedWord_ReturnsAboutForNewList() {
+            // The most common word is ABOUT
+            AllowedWordsList newList = new AllowedWordsList();
+            Word lowestRank = newList.GetLowestRankedWord();
+            Assert.True(lowestRank.GetName().Equals("ABOUT"));
         }
 
         [Fact]
-        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldNotRemoveHello()
-        {
-            // Ensures HELLO is not removed if a fact says no A's
-            AllowedWordsList notAWordlist = new AllowedWordsList();
-            Fact notA = new Fact('a', false, -1, 0);
-            List<Fact> noAFactList = new List<Fact>();
-            noAFactList.Add(notA);
-            notAWordlist.ApplyFacts(noAFactList);
-            Assert.True(notAWordlist.Contains("HELLO"));
+        public void AllowedWordsList_GetLowestRankedWord_ReturnsOtherIfAboutIsRemoved() {
+            // The second most common word is OTHER
+            AllowedWordsList newList = new AllowedWordsList();
+            newList.RemoveWord(0);
+            Word lowestRank = newList.GetLowestRankedWord();
+            Assert.True(lowestRank.GetName().Equals("OTHER"));
+        }
+    }
+
+    public class AllowewedWords_RemoveWord_Tests {
+        [Fact]
+        public void AllowedWordsList_RemoveWord_RemovesExactlyOneWord() {
+            AllowedWordsList newList = new AllowedWordsList();
+            int numBefore = newList.Count();
+            newList.RemoveWord(0);
+            int numAfter = newList.Count();
+            Assert.Equal(numBefore, (numAfter + 1));
         }
 
         [Fact]
-        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldRemoveAbout()
-        {
-            // Ensures ABOUT is not removed if a fact says no A's
-            AllowedWordsList notAWordlist = new AllowedWordsList();
-            Fact notA = new Fact('a', false, -1, 0);
-            List<Fact> noAFactList = new List<Fact>();
-            noAFactList.Add(notA);
-            notAWordlist.ApplyFacts(noAFactList);
-            Assert.False(notAWordlist.Contains("ABOUT"));
-        }
+        public void AllowedWordsList_RemoveWord_RemovesTheExpectedWord() {
+            AllowedWordsList newList = new AllowedWordsList();
 
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldRemoveHello()
-        {
-            // Ensures HELLO is not removed if a fact says no A's
-            AllowedWordsList notAWordlist = new AllowedWordsList();
-            Fact notA = new Fact('a', true, -1, 1);
-            List<Fact> noAFactList = new List<Fact>();
-            noAFactList.Add(notA);
-            notAWordlist.ApplyFacts(noAFactList);
-            Assert.False(notAWordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldNotRemoveAbout()
-        {
-            // Ensures ABOUT is not removed if a fact says no A's
-            AllowedWordsList notAWordlist = new AllowedWordsList();
-            Fact notA = new Fact('a', true, -1, 1);
-            List<Fact> noAFactList = new List<Fact>();
-            noAFactList.Add(notA);
-            notAWordlist.ApplyFacts(noAFactList);
-            Assert.True(notAWordlist.Contains("ABOUT"));
-        }
-
-        /*
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainE()
-        {
-            // Ensures hello is removed if a fact says no E's
-            AllowedWordsList notEWordlist = new AllowedWordsList();
-            Fact notE = new Fact('e', false, -1, -1);
-            List<Fact> noEFactList = new List<Fact>();
-            noEFactList.Add(notE);
-            notEWordlist.ApplyFacts(noEFactList);
-            Assert.False(notEWordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainE()
-        {
-            // Ensures hello is not removed if a fact says E's exist
-            AllowedWordsList eWordlist = new AllowedWordsList();
-            Fact yesE = new Fact('a', true, -1, -1);
-            List<Fact> yesEFactList = new List<Fact>();
-            yesEFactList.Add(yesE);
-            eWordlist.ApplyFacts(yesEFactList);
-            Assert.True(eWordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainHInPos0()
-        {
-            // Ensures hello is removed if a fact says no E in position 0
-            AllowedWordsList notH1Wordlist = new AllowedWordsList();
-            Fact notH1 = new Fact('h', false, 0, -1);
-            List<Fact> noH1FactList = new List<Fact>();
-            noH1FactList.Add(notH1);
-            notH1Wordlist.ApplyFacts(noH1FactList);
-            Assert.False(notH1Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainHInPos0()
-        {
-            // Ensures hello is not removed if a fact says E in position 0
-            AllowedWordsList h1Wordlist = new AllowedWordsList();
-            Fact yesH1 = new Fact('h', true, 0, -1);
-            List<Fact> yesH1FactList = new List<Fact>();
-            yesH1FactList.Add(yesH1);
-            h1Wordlist.ApplyFacts(yesH1FactList);
-            Assert.True(h1Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainEInPos1()
-        {
-            // Ensures hello is removed if a fact says no E in position 1
-            AllowedWordsList notE2Wordlist = new AllowedWordsList();
-            Fact notE2 = new Fact('e', false, 1, -1);
-            List<Fact> noE2FactList = new List<Fact>();
-            noE2FactList.Add(notE2);
-            notE2Wordlist.ApplyFacts(noE2FactList);
-            Assert.False(notE2Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainEInPos1()
-        {
-            // Ensures hello is not removed if a fact says E in position 1
-            AllowedWordsList e2Wordlist = new AllowedWordsList();
-            Fact yesE2 = new Fact('e', true, 1, -1);
-            List<Fact> yesE2FactList = new List<Fact>();
-            yesE2FactList.Add(yesE2);
-            e2Wordlist.ApplyFacts(yesE2FactList);
-            Assert.True(e2Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainLInPos2()
-        {
-            // Ensures hello is removed if a fact says no E in position 2
-            AllowedWordsList notL3Wordlist = new AllowedWordsList();
-            Fact notL3 = new Fact('l', false, 2, -1);
-            List<Fact> noL3FactList = new List<Fact>();
-            noL3FactList.Add(notL3);
-            notL3Wordlist.ApplyFacts(noL3FactList);
-            Assert.False(notL3Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainLInPos2()
-        {
-            // Ensures hello is not removed if a fact says E in position 2
-            AllowedWordsList l3Wordlist = new AllowedWordsList();
-            Fact yesL3 = new Fact('l', true, 2, -1);
-            List<Fact> yesL3FactList = new List<Fact>();
-            yesL3FactList.Add(yesL3);
-            l3Wordlist.ApplyFacts(yesL3FactList);
-            Assert.True(l3Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainLInPos3()
-        {
-            // Ensures hello is removed if a fact says no E in position 3
-            AllowedWordsList notL4Wordlist = new AllowedWordsList();
-            Fact notL4 = new Fact('l', false, 3, -1);
-            List<Fact> noL4FactList = new List<Fact>();
-            noL4FactList.Add(notL4);
-            notL4Wordlist.ApplyFacts(noL4FactList);
-            Assert.False(notL4Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainLInPos3()
-        {
-            // Ensures hello is not removed if a fact says E in position 3
-            AllowedWordsList l4Wordlist = new AllowedWordsList();
-            Fact yesL4 = new Fact('l', true, 3, -1);
-            List<Fact> yesL4FactList = new List<Fact>();
-            yesL4FactList.Add(yesL4);
-            l4Wordlist.ApplyFacts(yesL4FactList);
-            Assert.True(l4Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesWordsThatContainOInPos4()
-        {
-            // Ensures hello is removed if a fact says no E in position 4
-            AllowedWordsList notO5Wordlist = new AllowedWordsList();
-            Fact notO5 = new Fact('o', false, 4, -1);
-            List<Fact> noO5FactList = new List<Fact>();
-            noO5FactList.Add(notO5);
-            notO5Wordlist.ApplyFacts(noO5FactList);
-            Assert.False(notO5Wordlist.Contains("HELLO"));
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesWordsThatContainOInPos4()
-        {
-            // Ensures hello is not removed if a fact says E in position 4
-            AllowedWordsList o5Wordlist = new AllowedWordsList();
-            Fact yesO5 = new Fact('o', true, 4, -1);
-            List<Fact> yesO5FactList = new List<Fact>();
-            yesO5FactList.Add(yesO5);
-            o5Wordlist.ApplyFacts(yesO5FactList);
-            Assert.True(o5Wordlist.Contains("HELLO"));
-        }
-
-        */
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenZeroDs()
-        {
-            bool testPass = true;
-            string failMsg = "";
-
-            // Checks ADDED is removed if a fact says no Ds
-            AllowedWordsList noDWordList = new AllowedWordsList();
-            Fact noD = new Fact('D', false, -1, 0);
-            List<Fact> noDFactList = new List<Fact>();
-            noDFactList.Add(noD);
-            noDWordList.ApplyFacts(noDFactList);
-            if (noDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Failed to remove ADDED when total Ds was 0. ";
-                testPass = false;
+            // Just checking the AllowedWordsList is set up as expected
+            if (!newList.Contains("ABOUT")){
+                var errorMsg = "ERROR! A newly created AllowedWordList was missing the word ABOUT. Cannot run this test.";
+                throw new InvalidOperationException(errorMsg);
             }
-            Assert.True(testPass, failMsg);
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenOneD()
-        {
-            bool testPass = true;
-            string failMsg = "";
-
-            // Checks ADDED is removed if a fact says one D
-            AllowedWordsList oneDWordList = new AllowedWordsList();
-            Fact oneD = new Fact('D', true, -1, 1);
-            List<Fact> oneDFactList = new List<Fact>();
-            oneDFactList.Add(oneD);
-            oneDWordList.ApplyFacts(oneDFactList);
-            if (oneDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Failed to remove ADDED when total Ds was 1. ";
-                testPass = false;
-            }
-            Assert.True(testPass, failMsg);
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenTwoDs()
-        {
-            bool testPass = true;
-            string failMsg = "";
-
-            // Checks ADDED is removed if a fact says two Ds
-            AllowedWordsList twoDWordList = new AllowedWordsList();
-            Fact twoD = new Fact('D', true, -1, 2);
-            List<Fact> twoDFactList = new List<Fact>();
-            twoDFactList.Add(twoD);
-            twoDWordList.ApplyFacts(twoDFactList);
-            if (twoDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Failed to remove ADDED when total Ds was 2. ";
-                testPass = false;
-            }
-            Assert.True(testPass, failMsg);
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyLeavesAddedWhenThreeDs()
-        {
-            bool testPass = true;
-            string failMsg = "";
-
-            // Checks ADDED is NOT removed if a fact says three Ds
-            AllowedWordsList threeDWordList = new AllowedWordsList();
-            Fact threeD = new Fact('D', true, -1, 3);
-            List<Fact> threeDFactList = new List<Fact>();
-            threeDFactList.Add(threeD);
-            threeDWordList.ApplyFacts(threeDFactList);
-            if (!threeDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Remove ADDED when total Ds was 3. ";
-                testPass = false;
-            }
-            Assert.True(testPass, failMsg);
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenFourDs()
-        {
-            bool testPass = true;
-            string failMsg = "";
-
-            // Checks ADDED is removed if a fact says four Ds
-            AllowedWordsList fourDWordList = new AllowedWordsList();
-            Fact fourD = new Fact('D', true, -1, 4);
-            List<Fact> fourDFactList = new List<Fact>();
-            fourDFactList.Add(fourD);
-            fourDWordList.ApplyFacts(fourDFactList);
-            if (fourDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Failed to remove ADDED when total Ds was 4. ";
-                testPass = false;
-            }
-            Assert.True(testPass, failMsg);
-        }
-
-        [Fact]
-        public void AllowedWordsList_ApplyFacts_CorrectlyRemovesAddedWhenFiveDs()
-        {
-            bool testPass = true;
-            string failMsg = "";
-            // Checks ADDED is removed if a fact says five Ds
-            AllowedWordsList fiveDWordList = new AllowedWordsList();
-            Fact fiveD = new Fact('D', true, -1, 5);
-            List<Fact> fiveDFactList = new List<Fact>();
-            fiveDFactList.Add(fiveD);
-            fiveDWordList.ApplyFacts(fiveDFactList);
-            if (fiveDWordList.Contains("ADDED"))
-            {
-                failMsg = failMsg + "Failed to remove ADDED when total Ds was 5. ";
-                testPass = false;
+            if (!newList.AllowedWords[0].GetName().Equals("ABOUT")) {
+                string firstWord = newList.AllowedWords[0].GetName();
+                var errorMsg = "ERROR! A newly created AllowedWordList had the word " + firstWord + " as the top ranked word. Expected ABOUT. Cannot run this test.";
+                throw new InvalidOperationException(errorMsg);
             }
 
-            Assert.True(testPass, failMsg);
+            Word about = newList.AllowedWords[0];
+            newList.RemoveWord(0);
+            Word notAbout = newList.AllowedWords[0];
+
+            Assert.False(about.Equals(notAbout));
         }
+    }
+
+    public class AllowewedWords_ApplyFacts_Tests {
+        // Declaring a few facts up front for simplicity and to reduce repetition/human error
+        private readonly Fact ZeroA = new Fact('a', false, -1, 0);
+        private readonly Fact OneA = new Fact('a', true, -1, 1);
+        private readonly Fact TwoA = new Fact('a', true, -1, 2);
+        private readonly Fact ThreeD = new Fact('d', true, -1, 3);
+        private readonly Fact FourD = new Fact('a', true, -1, 4);
+        private readonly Fact AExists = new Fact('a', true, -1, -1);
+        private readonly Fact ADoesNotExists = new Fact('a', false, -1, -1);
+        private readonly Fact AExistsAt0 = new Fact('a', true, 0, -1);
+        private readonly Fact AExistsAt1 = new Fact('a', true, 1, -1);
+        private readonly Fact AExistsAt2 = new Fact('a', true, 2, -1);
+        private readonly Fact AExistsAt3 = new Fact('a', true, 3, -1);
+        private readonly Fact AExistsAt4 = new Fact('a', true, 4, -1);
+        private readonly Fact NoAAt0 = new Fact('a', false, 0, -1);
+        private readonly Fact NoAAt1 = new Fact('a', false, 1, -1);
+        private readonly Fact NoAAt2 = new Fact('a', false, 2, -1);
+        private readonly Fact NoAAt3 = new Fact('a', false, 3, -1);
+        private readonly Fact NoAAt4 = new Fact('a', false, 4, -1);
+
+        // Helper method to simplify tests below 
+        private bool applyingFactRemovesWord(Fact fact, string word) {
+            AllowedWordsList wordList = new AllowedWordsList();
+            List<Fact> factList = new List<Fact> { fact };
+            wordList.ApplyFacts(factList);
+            return !wordList.Contains(word);
+        }
+
+        [Fact]
+        // Applying ZeroA should not remove HELLO
+        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldNotRemoveHello() {        
+            Assert.False(applyingFactRemovesWord(ZeroA, "HELLO"));
+        }
+
+        [Fact]
+        // Applying ZeroA should remove ABOUT
+        public void AllowedWordsList_ApplyFacts_0xAExistRuleShouldRemoveAbout() {
+            Assert.True(applyingFactRemovesWord(ZeroA, "ABOUT"));
+        }
+
+        [Fact]
+        // Applying OneA should not remove ABOUT
+        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldNotRemoveAbout() {
+            Assert.False(applyingFactRemovesWord(OneA, "ABOUT"));
+        }
+
+        [Fact]
+        // Applying OneA should remove HELLO
+        public void AllowedWordsList_ApplyFacts_1xAExistRuleShouldRemoveHello() {
+            Assert.True(applyingFactRemovesWord(OneA, "HELLO"));
+        }
+
+        [Fact]
+        // Applying TwoA should not remove SALAD
+        public void AllowedWordsList_ApplyFacts_2xAExistRuleShouldNotRemoveSalad() {
+            Assert.False(applyingFactRemovesWord(TwoA, "SALAD"));
+        }
+
+        [Fact]
+        // Applying TwoA should remove ABOUT
+        public void AllowedWordsList_ApplyFacts_2xAExistRuleShouldRemoveAbout() {
+            Assert.True(applyingFactRemovesWord(TwoA, "ABOUT"));
+        }
+
+        [Fact]
+        // Applying ThreeD should not remove ADDED
+        public void AllowedWordsList_ApplyFacts_3xDExistRuleShouldNotRemoveAdded() {
+            Assert.False(applyingFactRemovesWord(ThreeD, "ADDED"));
+        }
+
+        [Fact]
+        // Applying ThreeD should remove SALAD
+        public void AllowedWordsList_ApplyFacts_3xDExistRuleShouldRemoveSalad() {
+            Assert.True(applyingFactRemovesWord(ThreeD, "SALAD"));
+        }
+
+        [Fact]
+        // Applying FourD should remove ALL THE WORDS
+        public void AllowedWordsList_ApplyFacts_4xDExistRuleShouldRemoveAllWords() {
+            AllowedWordsList wordList = new AllowedWordsList();
+            List<Fact> factList = new List<Fact> { FourD };
+            wordList.ApplyFacts(factList);
+            Assert.True(wordList.Count() == 0);
+        }
+
+        [Fact]
+        // Applying AExists should not remove ADDED
+        public void AllowedWordsList_ApplyFacts_AExistRuleShouldNotRemoveAdded() {
+            Assert.False(applyingFactRemovesWord(AExists, "ADDED"));
+        }
+
+        [Fact]
+        // Applying AExists should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistRuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(AExists, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExists should remove HELLO
+        public void AllowedWordsList_ApplyFacts_AExistRuleShouldRemoveHello() {
+            Assert.True(applyingFactRemovesWord(AExists, "HELLO"));
+        }
+
+        [Fact]
+        // Applying ADoesNotExists should not remove HELLO
+        public void AllowedWordsList_ApplyFacts_ADoesNotExistsRuleShouldNotRemoveHello() {
+            Assert.False(applyingFactRemovesWord(ADoesNotExists, "HELLO"));
+        }
+
+        [Fact]
+        // Applying ADoesNotExists should remove ADDED
+        public void AllowedWordsList_ApplyFacts_ADoesNotExistsRuleShouldRemoveAdded() {
+            Assert.True(applyingFactRemovesWord(ADoesNotExists, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExistsAt0 should not remove ADDED
+        public void AllowedWordsList_ApplyFacts_AExistsAt0RuleShouldNotRemoveAdded() {
+            Assert.False(applyingFactRemovesWord(AExistsAt0, "ADDED"));
+        }
+
+        [Fact]
+        // Applying AExistsAt0 should remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistsAt0RuleShouldRemoveDream() {
+            Assert.True(applyingFactRemovesWord(AExistsAt0, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExistsAt1 should not remove BADGE
+        public void AllowedWordsList_ApplyFacts_AExistsAt1RuleShouldNotRemoveBadge() {
+            Assert.False(applyingFactRemovesWord(AExistsAt1, "BADGE"));
+        }
+
+        [Fact]
+        // Applying AExistsAt1 should remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistsAt1RuleShouldRemoveDream() {
+            Assert.True(applyingFactRemovesWord(AExistsAt1, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExistsAt2 should not remove PLATE
+        public void AllowedWordsList_ApplyFacts_AExistsAt2RuleShouldNotRemovePlate() {
+            Assert.False(applyingFactRemovesWord(AExistsAt2, "PLATE"));
+        }
+
+        [Fact]
+        // Applying AExistsAt2 should remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistsAt2RuleShouldRemoveDream() {
+            Assert.True(applyingFactRemovesWord(AExistsAt2, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExistsAt3 should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistsAt3RuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(AExistsAt3, "DREAM"));
+        }
+
+        [Fact]
+        // Applying AExistsAt3 should remove PLATE
+        public void AllowedWordsList_ApplyFacts_AExistsAt3RuleShouldRemovePlate() {
+            Assert.True(applyingFactRemovesWord(AExistsAt3, "PLATE"));
+        }
+
+        [Fact]
+        // Applying AExistsAt4 should not remove SALSA
+        public void AllowedWordsList_ApplyFacts_AExistsAt4RuleShouldNotRemoveSalsa() {
+            Assert.False(applyingFactRemovesWord(AExistsAt4, "SALSA"));
+        }
+
+        [Fact]
+        // Applying AExistsAt4 should remove DREAM
+        public void AllowedWordsList_ApplyFacts_AExistsAt4RuleShouldRemoveDream() {
+            Assert.True(applyingFactRemovesWord(AExistsAt4, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt0 should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_NoAAt0RuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(NoAAt0, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt0 should remove ADDED
+        public void AllowedWordsList_ApplyFacts_NoAAt0RuleShouldRemoveAdded() {
+            Assert.True(applyingFactRemovesWord(NoAAt0, "ADDED"));
+        }
+
+        [Fact]
+        // Applying NoAAt1 should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_NoAAt1RuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(NoAAt1, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt1 should remove BADGE
+        public void AllowedWordsList_ApplyFacts_NoAAt1RuleShouldRemoveAbout() {
+            Assert.True(applyingFactRemovesWord(NoAAt1, "BADGE"));
+        }
+
+        [Fact]
+        // Applying NoAAt2 should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_NoAAt2RuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(NoAAt2, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt2 should remove PLATE
+        public void AllowedWordsList_ApplyFacts_NoAAt2RuleShouldRemovePlate() {
+            Assert.True(applyingFactRemovesWord(NoAAt2, "PLATE"));
+        }
+
+        [Fact]
+        // Applying NoAAt3 should not remove PLATE
+        public void AllowedWordsList_ApplyFacts_NoAAt3RuleShouldNotRemovePlate() {
+            Assert.False(applyingFactRemovesWord(NoAAt3, "PLATE"));
+        }
+
+        [Fact]
+        // Applying NoAAt3 should remove DREAM
+        public void AllowedWordsList_ApplyFacts_NoAAt3RuleShouldRemoveDream() {
+            Assert.True(applyingFactRemovesWord(NoAAt3, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt4 should not remove DREAM
+        public void AllowedWordsList_ApplyFacts_NoAAt4RuleShouldNotRemoveDream() {
+            Assert.False(applyingFactRemovesWord(NoAAt4, "DREAM"));
+        }
+
+        [Fact]
+        // Applying NoAAt4 should remove SALSA
+        public void AllowedWordsList_ApplyFacts_NoAAt4RuleShouldRemoveSalsa() {
+            Assert.True(applyingFactRemovesWord(NoAAt4, "SALSA"));
+        }
+
     }
 }

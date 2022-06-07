@@ -6,9 +6,9 @@ namespace WordleEngine
 {
     public class Word
     {
-        private string Name { get; set; }
-        private  int  Prevelance { get; set; }
-        private int Rank { get; set; }
+        public string Name { get; set; }
+        public int Prevelance { get; set; }
+        public int Rank { get; set; }
 
         public Word(int rank, string name, int prevelance) {
             this.Rank = rank;

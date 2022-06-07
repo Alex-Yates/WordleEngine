@@ -1,9 +1,8 @@
 using Amazon.Lambda.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -43,7 +42,8 @@ namespace WordleEngine{
 
                 string thisWordName = guessedWord.GetName();
                 int numRemaining = bot.GetNumRemainingPossibleAnswers();
-                Guess thisGuess = new Guess(thisWordName, answer, numRemaining);
+                List<Word> topPossible = bot.GetTopFiveWords();
+                Guess thisGuess = new Guess(thisWordName, answer, numRemaining, topPossible);
 
                 guesses.Add(thisGuess);
 
@@ -54,7 +54,8 @@ namespace WordleEngine{
 
             // Return the results
             string json = JsonConvert.SerializeObject(guesses);
-            Console.WriteLine(json);
+            string jsonFormatted = JValue.Parse(json).ToString(Formatting.Indented);
+            Console.WriteLine(jsonFormatted);
             return json;
         }
     }

@@ -9,11 +9,13 @@ namespace WordleEngine
         public readonly string Word;
         public readonly string Answer;
         public readonly int RemainingPossibleAnswers;
+        public readonly List<Word> TopPossibleAnswers;
 
-        public Guess(string word, string answer, int remaining) {         
+        public Guess(string word, string answer, int remaining, List<Word> topPossible) {         
             this.Word = word;
             this.Answer = answer;
             this.RemainingPossibleAnswers = remaining;
+            this.TopPossibleAnswers = topPossible;
         }
     }
 }

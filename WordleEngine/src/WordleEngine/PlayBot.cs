@@ -6,8 +6,7 @@ using System.Text;
 
 namespace WordleEngine
 {
-    public class PlayBot
-    {
+    public class PlayBot {
         private AllowedWordsList AllowedGuesses { get; set; }
         private AllowedWordsList RemainingWords { get; set; }
 
@@ -34,21 +33,20 @@ namespace WordleEngine
             guessedWord = guessedWord.ToUpper();
 
             // Validating the guessed word
-            if (!allowableWords.Contains(guessedWord)){
+            if (!allowableWords.Contains(guessedWord)) {
                 var errorMsg = "ERROR! " + guessedWord + " is not a legal word!";
                 throw new InvalidOperationException(errorMsg);
             }
-            
+
             // Validating the answer pattern
-            if (answerPattern.Length != 5){
+            if (answerPattern.Length != 5) {
                 var errorMsg = "ERROR! " + answerPattern + " is not in the correct format! (Five chars, all X, Y or G.)";
                 throw new InvalidOperationException(errorMsg);
             }
-    
+
             List<Fact> returnFactList = new List<Fact>();
 
-            for (int i = 0; i < 5; i++)
-            {
+            for (int i = 0; i < 5; i++) {
                 char letter = guessedWord[i];
 
                 // Case: G
@@ -56,7 +54,7 @@ namespace WordleEngine
                     Fact matchedLetterRule = new Fact(letter, true, i, -1);
 
                     // if the fact does not already exist, add it.
-                    if(!returnFactList.Exists(i => i.Name.Equals(matchedLetterRule.Name))){
+                    if (!returnFactList.Exists(i => i.Name.Equals(matchedLetterRule.Name))) {
                         returnFactList.Add(matchedLetterRule);
                     }
                 }
@@ -69,10 +67,10 @@ namespace WordleEngine
                     Fact letterDoesNotExistInThisPositionRule = new Fact(letter, false, i, -1);
 
                     // if the facts do not already exist, add them.
-                    if (!returnFactList.Exists(i => i.Name.Equals(letterExistsRule.Name))){
+                    if (!returnFactList.Exists(i => i.Name.Equals(letterExistsRule.Name))) {
                         returnFactList.Add(letterExistsRule);
                     }
-                    if (!returnFactList.Exists(i => i.Name.Equals(letterDoesNotExistInThisPositionRule.Name))){
+                    if (!returnFactList.Exists(i => i.Name.Equals(letterDoesNotExistInThisPositionRule.Name))) {
                         returnFactList.Add(letterDoesNotExistInThisPositionRule);
                     }
                 }
@@ -90,13 +88,11 @@ namespace WordleEngine
                         you that no *more* L's exist.
 
                         To summarise, X tells us exactly HOW MANY of a given letter exist in the solution. 
-                    */ 
+                    */
                     int numberOfThisLetterInSolution = 0;
                     for (int j = 0; j < 5; j++) {
-                        if ((answerPattern[j].Equals('G')) || (answerPattern[j].Equals('Y')))
-                        {
-                            if (guessedWord[j].Equals(letter))
-                            {
+                        if ((answerPattern[j].Equals('G')) || (answerPattern[j].Equals('Y'))) {
+                            if (guessedWord[j].Equals(letter)) {
                                 numberOfThisLetterInSolution++;
                             }
                         }
@@ -110,16 +106,22 @@ namespace WordleEngine
                     if (numberOfThisLetterInSolution == 0) {
                         solutionHasXCharsOfThisTypeRule = new Fact(letter, false, -1, 0);
                     }
-                    
+
                     // if the fact does not already exist, add them.
-                    if (!returnFactList.Exists(i => i.Name.Equals(solutionHasXCharsOfThisTypeRule.Name)))
-                    {
+                    if (!returnFactList.Exists(i => i.Name.Equals(solutionHasXCharsOfThisTypeRule.Name))) {
                         returnFactList.Add(solutionHasXCharsOfThisTypeRule);
                     }
                 }
             }
 
             return returnFactList;
+        }
+
+        public List<Word> GetTopFiveWords() {
+            List<Word> topFiveWords = (from words in this.RemainingWords.AllowedWords
+                                      orderby words.GetRank() ascending
+                                      select words).Take(5).ToList();
+            return topFiveWords;
         }
 
         public int GetNumRemainingPossibleAnswers() {
