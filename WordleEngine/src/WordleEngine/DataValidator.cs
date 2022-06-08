@@ -6,10 +6,10 @@ namespace WordleEngine{
 
     public class DataValidator
     {
-        private AllowedWordsList AllLegalWords { get; set; }
+        private WordList AllLegalWords { get; set; }
 
         public DataValidator() {
-            AllLegalWords = new AllowedWordsList();
+            AllLegalWords = new WordList();
         }
 
         public string ValidateAnswer(string input)

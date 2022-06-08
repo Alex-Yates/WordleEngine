@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace WordleEngine {
     
-    public class AllowedWordsList {
+    public class WordList {
 
         public List<Word> AllowedWords = new List<Word>();
 
-        public AllowedWordsList() {
+        public WordList() {
             var legalWordsFile = @"wordle-allowed-guesses.csv";
             this.AllowedWords = ConvertCSVToAllowedWordsList(legalWordsFile);
         }

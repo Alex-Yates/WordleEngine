@@ -16,7 +16,7 @@ namespace WordleEngine.Tests {
             // Positions -1 for a Fact should work
             int pos = -1;
             Fact f = new Fact('a', true, pos, -1);
-            Assert.Equal(f.GetPosition(), pos);
+            Assert.Equal(f.Position, pos);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace WordleEngine.Tests {
             // Positions 0 for a Fact should work
             int pos = 0;
             Fact f = new Fact('a', true, pos, -1);
-            Assert.Equal(f.GetPosition(), pos);
+            Assert.Equal(f.Position, pos);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace WordleEngine.Tests {
             // Positions 4 for a Fact should work
             int pos = 4;
             Fact f = new Fact('a', true, pos, -1);
-            Assert.Equal(f.GetPosition(), pos);
+            Assert.Equal(f.Position, pos);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace WordleEngine.Tests {
             // Total -1 for a Fact should work
             int total = -1;
             Fact f = new Fact('a', true, -1, total);
-            Assert.Equal(f.GetTotal(), total);
+            Assert.Equal(f.Total, total);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace WordleEngine.Tests {
             // Total 0 for a Fact should work
             int total = 0;
             Fact f = new Fact('a', true, -1, total);
-            Assert.Equal(f.GetTotal(), total);
+            Assert.Equal(f.Total, total);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace WordleEngine.Tests {
             // Total 4 for a Fact should work
             int total = 5;
             Fact f = new Fact('a', true, -1, total);
-            Assert.Equal(f.GetTotal(), total);
+            Assert.Equal(f.Total, total);
         }
 
         [Fact]

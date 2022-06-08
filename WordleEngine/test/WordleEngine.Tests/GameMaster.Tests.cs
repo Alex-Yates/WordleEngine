@@ -23,43 +23,103 @@ namespace WordleEngine.Tests {
 
     public class GameMaster_GuessWord_Tests {
         [Fact]
-        public void GameMaster_GuessWord_GGGGGIfCorrect() {
+        public void GameMaster_GuessWord_HelloReturnsGGGGGIfCorrect() {
             string secretWord = "hello";
             string guessedWord = "hello";
             string expectedAnswer = "GGGGG";
 
             GameMaster gm = new GameMaster(secretWord);
-            string actualAnswer = gm.GuessWord(guessedWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
             string message = "actual: " + actualAnswer + " expected: " + expectedAnswer;
             Assert.True(actualAnswer.Equals(expectedAnswer), message);
         }
 
         [Fact]
-        public void GameMaster_GuessWord_XXXXXIfNoMatches() {
+        public void GameMaster_GuessWord_LatchReturnsXXXXXForSuper() {
             string secretWord = "super";
             string guessedWord = "latch";
             string expectedAnswer = "XXXXX";
 
             GameMaster gm = new GameMaster(secretWord);
-            string actualAnswer = gm.GuessWord(guessedWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
             Assert.Equal(actualAnswer, expectedAnswer);
         }
 
         [Fact]
-        public void GameMaster_GuessWord_YXXXYIfAppropriate() {
+        public void GameMaster_GuessWord_AboutReturnsYXXXYForLatch() {
             string secretWord = "latch";
             string guessedWord = "about";
             string expectedAnswer = "YXXXY";
 
             GameMaster gm = new GameMaster(secretWord);
-            string actualAnswer = gm.GuessWord(guessedWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
             Assert.Equal(actualAnswer, expectedAnswer);
         }
 
         [Fact]
-        public void GameMaster_GuessWord_ThrowsErrorIfIllegalWord() {
+        public void GameMaster_GuessWord_BuddyReturnsXXYXXForDrain() {
+            // Interesting case. Are we handling multiple yellows correctly?
+            string secretWord = "drain";
+            string guessedWord = "buddy";
+            string expectedAnswer = "XXYXX";
+
+            GameMaster gm = new GameMaster(secretWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
+            Assert.Equal(actualAnswer, expectedAnswer);
+        }
+
+        [Fact]
+        public void GameMaster_GuessWord_DandyReturnsYXXXXForDrain() {
+            // Interesting case. Are we handling multiple yellows correctly?
+            string secretWord = "drain";
+            string guessedWord = "dandy";
+            string expectedAnswer = "YXXXX";
+
+            GameMaster gm = new GameMaster(secretWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
+            Assert.Equal(actualAnswer, expectedAnswer);
+        }
+
+        [Fact]
+        public void GameMaster_GuessWord_AddedReturnsXYYXXForDandy() {
+            // Interesting case. Are we handling multiple yellows correctly?
+            string secretWord = "dandy";
+            string guessedWord = "added";
+            string expectedAnswer = "XYYXX";
+
+            GameMaster gm = new GameMaster(secretWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
+            Assert.Equal(actualAnswer, expectedAnswer);
+        }
+
+        [Fact]
+        public void GameMaster_GuessWord_AddedReturnsXGGXXForAdder() {
+            // Interesting case. Are we handling multiple yellows correctly?
+            string secretWord = "adder";
+            string guessedWord = "added";
+            string expectedAnswer = "XGGXX";
+
+            GameMaster gm = new GameMaster(secretWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
+            Assert.Equal(actualAnswer, expectedAnswer);
+        }
+
+        [Fact]
+        public void GameMaster_GuessWord_AddedReturnsYYXYGForDread() {
+            // Interesting case. Are we handling multiple yellows correctly?
+            string secretWord = "dread";
+            string guessedWord = "added";
+            string expectedAnswer = "YYXYG";
+
+            GameMaster gm = new GameMaster(secretWord);
+            string actualAnswer = gm.GetAnswer(guessedWord);
+            Assert.Equal(actualAnswer, expectedAnswer);
+        }
+
+        [Fact]
+        public void GameMaster_GuessWord_ThrowsErrorIfIllegalWordRrong() {
             GameMaster gm = new GameMaster("right");
-            Assert.Throws<InvalidOperationException>(() => gm.GuessWord("rrong"));
+            Assert.Throws<InvalidOperationException>(() => gm.GetAnswer("rrong"));
         }
     }
 }

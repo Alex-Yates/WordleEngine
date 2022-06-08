@@ -7,41 +7,39 @@ namespace WordleEngine
     public class GameMaster
     {
         private readonly string SecretWord;
+        private readonly DataValidator Validator = new DataValidator();
 
+        // Creates a new GameMaster
         public GameMaster(string secretWord) {
-            AllowedWordsList allowableWords = new AllowedWordsList();
-            secretWord = secretWord.ToUpper();
-            if (!allowableWords.Contains(secretWord)){
-                var errorMsg = "ERROR! " + secretWord + " is not a legal word!";
-                throw new InvalidOperationException(errorMsg);
-            }
-            this.SecretWord = secretWord;
+            string validatedSecretWord = Validator.ValidateAnswer(secretWord);
+            this.SecretWord = validatedSecretWord;
         }
 
-        public string GuessWord(string guessedWord) {
-            guessedWord = guessedWord.ToUpper();
-            AllowedWordsList allowableWords = new AllowedWordsList();
-            if (!allowableWords.Contains(guessedWord)) {
-                var errorMsg = "ERROR! " + guessedWord + " is not a legal word!";
-                throw new InvalidOperationException(errorMsg);
-            }
+        // Returns an answer (e.g. "XGXYY") for a given guessed word
+        public string GetAnswer(string guessedWord) {
+            // Cleaning and validating the answer
+            string validatedGuessedWord = Validator.ValidateAnswer(guessedWord);
 
+            // X = Grey (this letter does not exist in SecretWord)
+            // Y = Yellow (this letter exists in the SecretWord, but in a different position)
+            // G = Green (this letter exists in the SecretWord, in the same position)
+
+            // Assume no matches to start with
             string defaultAnswer = "XXXXX";
-
             char[] answerArray = defaultAnswer.ToCharArray();
 
+            // Iterating through the guessed word, and flipping Xs to Ys or Gs as appropriate
             for (int i = 0; i < 5; i++) {
-                if (this.SecretWord.Contains(guessedWord[i])){
+                if (this.SecretWord.Contains(validatedGuessedWord[i])){
                     answerArray[i] = 'Y';
                 }
-                if (this.SecretWord[i].Equals(guessedWord[i]))
-                {
+                if (this.SecretWord[i].Equals(validatedGuessedWord[i])){
                     answerArray[i] = 'G';
                 }
             }
 
+            // Converting char[] back to string and returning result
             string actualAnswer = new string(answerArray);
-
             return actualAnswer;
         }
     }

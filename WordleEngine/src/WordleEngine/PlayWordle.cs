@@ -35,7 +35,7 @@ namespace WordleEngine{
             for (int i = 0; i < 6; i++){
                 Word guessedWord = bot.ChooseWord();
                 
-                string answer = game.GuessWord(guessedWord.GetName());
+                string answer = game.GetAnswer(guessedWord.GetName());
 
                 List<Fact> facts = bot.GetFacts(guessedWord.GetName(), answer);
                 bot.ApplyFacts(facts);

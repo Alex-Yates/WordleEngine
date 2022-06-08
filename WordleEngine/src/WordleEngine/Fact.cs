@@ -42,27 +42,13 @@ namespace WordleEngine
                     positionName = " in position " + position.ToString();
                 }
 
+                // For example "A exists", "B does not exist", "C exists in position 0", "D does not exist in position 4"
                 this.Name = letter + existsName + positionName;
             }
             else {
+                // For example: "0x A exist", "1x B exist", "2x C exist", "3x D exist"
                 this.Name = total + "x " + letter + " exist";
             }
-        }
-
-        public char GetLetter() {
-            return this.Letter;
-        }
-
-        public bool GetExists() {
-            return this.Exists;
-        }
-
-        public int GetPosition() {
-            return this.Position;
-        }
-
-        public int GetTotal() {
-            return this.Total;
         }
     }
 }

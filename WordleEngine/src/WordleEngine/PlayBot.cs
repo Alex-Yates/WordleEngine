@@ -7,12 +7,12 @@ using System.Text;
 namespace WordleEngine
 {
     public class PlayBot {
-        private AllowedWordsList AllowedGuesses { get; set; }
-        private AllowedWordsList RemainingWords { get; set; }
+        private WordList AllowedGuesses { get; set; }
+        private WordList RemainingWords { get; set; }
 
         public PlayBot() {
-            this.AllowedGuesses = new AllowedWordsList();
-            this.RemainingWords = new AllowedWordsList();
+            this.AllowedGuesses = new WordList();
+            this.RemainingWords = new WordList();
         }
 
         public Word ChooseWord() {
@@ -29,7 +29,7 @@ namespace WordleEngine
 
         // To generate facts from a guessed word and its answer pattern
         public List<Fact> GetFacts(string guessedWord, string answerPattern) {
-            AllowedWordsList allowableWords = new AllowedWordsList();
+            WordList allowableWords = new WordList();
             guessedWord = guessedWord.ToUpper();
 
             // Validating the guessed word
