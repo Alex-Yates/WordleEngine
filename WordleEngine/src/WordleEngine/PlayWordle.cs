@@ -12,6 +12,8 @@ namespace WordleEngine{
 
     public class PlayWordle
     {
+        // Creates message: "IDE0060 Remove unused parameter 'context' if it is not part of a shipped public API WordleEngine"
+        //   I think I can probably ignore this error since context is required for AWS Lambda functions?
         public string Answer(string input, ILambdaContext context)
         {     
             // Cleaning and validating the answer
@@ -35,12 +37,12 @@ namespace WordleEngine{
             for (int i = 0; i < 6; i++){
                 Word guessedWord = bot.ChooseWord();
                 
-                string answer = game.GetAnswer(guessedWord.GetName());
+                string answer = game.GetAnswer(guessedWord.Name);
 
-                List<Fact> facts = bot.GetFacts(guessedWord.GetName(), answer);
+                List<Fact> facts = bot.GetFacts(guessedWord.Name, answer);
                 bot.ApplyFacts(facts);
 
-                string thisWordName = guessedWord.GetName();
+                string thisWordName = guessedWord.Name;
                 int numRemaining = bot.GetNumRemainingPossibleAnswers();
                 List<Word> topPossible = bot.GetTopFiveWords();
                 Guess thisGuess = new Guess(thisWordName, answer, numRemaining, topPossible);

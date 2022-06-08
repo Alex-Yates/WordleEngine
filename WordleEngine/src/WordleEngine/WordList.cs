@@ -18,7 +18,14 @@ namespace WordleEngine {
 
         private static List<Word> ConvertCSVToAllowedWordsList(string strFilePath) {
             StreamReader sr = new StreamReader(strFilePath);
-            string[] headers = sr.ReadLine().Split(',');
+
+            // The following generates a "CS8602 Deference of a possible Null Reference" warning
+            //   This happens because the file might be empty, so the string created by ReadLine might be null.
+            //   I can remove this null reference message by using the "null forgiving" operator (!) after ReadLine(), e.g. sr.ReadLine()!.Split(','); 
+            //   but I don't know if this is a good idea. Is it wise to assume the file will never get accidentally deleted? 
+            //   What's the cleanest way to handle this?
+            _ = sr.ReadLine().Split(','); 
+            
             List<Word> wordList = new List<Word>();
 
             while (!sr.EndOfStream) {
@@ -34,7 +41,7 @@ namespace WordleEngine {
         }
 
         public bool Contains(string input) {
-            List<Word> matchingWords = AllowedWords.FindAll(i => i.GetName().Equals(input));
+            List<Word> matchingWords = AllowedWords.FindAll(i => i.Name.Equals(input));
             return (matchingWords.Count == 1);
         }
 
@@ -44,8 +51,8 @@ namespace WordleEngine {
 
         public Word GetLowestRankedWord() {
             try { 
-                int minRank = this.AllowedWords.Select(word => word.GetRank()).Min();
-                return this.AllowedWords.FirstOrDefault(x => x.GetRank() == minRank);
+                int minRank = this.AllowedWords.Select(word => word.Rank).Min();
+                return this.AllowedWords.FirstOrDefault(x => x.Rank == minRank);
             }
             catch {
                 int numWords = this.AllowedWords.Count;
@@ -82,14 +89,14 @@ namespace WordleEngine {
                 // Case: where the letter exists but the position is irrelevant
                 if ((position == -1) && (exists)) {
                     // keep only the words that contain the letter
-                    List<Word> wordsToKeep = AllowedWords.FindAll(i => i.GetName().Contains(letter));
+                    List<Word> wordsToKeep = AllowedWords.FindAll(i => i.Name.Contains(letter));
                     AllowedWords = wordsToKeep;
                 }
 
                 // Case: where letter does not exist in any position
                 if ((position == -1) && (!exists)) {
                     // keep only the words that do not contain the letter
-                    List<Word> wordsToRemove = AllowedWords.FindAll(i => i.GetName().Contains(letter));
+                    List<Word> wordsToRemove = AllowedWords.FindAll(i => i.Name.Contains(letter));
                     foreach (Word wordToRemove in wordsToRemove){
                         AllowedWords.Remove(wordToRemove);
                     }
@@ -98,14 +105,14 @@ namespace WordleEngine {
                 // Case: where letter exists in a specific position
                 if ((position != -1) && (exists)) {
                     // keep only the words that contain the letter in the specific position
-                    List<Word> wordsToKeep = AllowedWords.FindAll(i => i.GetName()[position].Equals(letter));
+                    List<Word> wordsToKeep = AllowedWords.FindAll(i => i.Name[position].Equals(letter));
                     AllowedWords = wordsToKeep;
                 }
 
                 // Case: where letter does not exist in a specific position
                 if ((position != -1) && !(exists)) {
                     // keep only the words do not contain the letter in the specific position
-                    List<Word> wordsToRemove = AllowedWords.FindAll(i => i.GetName()[position].Equals(letter));
+                    List<Word> wordsToRemove = AllowedWords.FindAll(i => i.Name[position].Equals(letter));
                     foreach (Word wordToRemove in wordsToRemove) {
                         AllowedWords.Remove(wordToRemove);
                     }
@@ -114,7 +121,7 @@ namespace WordleEngine {
                 // Case: where there is a known total number of a specific letter
                 if (total != -1){
                     // keep only the words that have the specified total number of a given letter             
-                    List<Word> wordsToKeep = AllowedWords.FindAll(i => (i.GetName().Count(character => character.Equals(letter))) == total);
+                    List<Word> wordsToKeep = AllowedWords.FindAll(i => (i.Name.Count(character => character.Equals(letter))) == total);
                     AllowedWords = wordsToKeep;
                 }
             }

@@ -21,9 +21,9 @@ namespace WordleEngine.Tests {
         }
     }
 
-    public class GameMaster_GuessWord_Tests {
+    public class GameMaster_GetAnswer_Tests {
         [Fact]
-        public void GameMaster_GuessWord_HelloReturnsGGGGGIfCorrect() {
+        public void GameMaster_GetAnswer_HelloReturnsGGGGGIfCorrect() {
             string secretWord = "hello";
             string guessedWord = "hello";
             string expectedAnswer = "GGGGG";
@@ -35,7 +35,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_LatchReturnsXXXXXForSuper() {
+        public void GameMaster_GetAnswer_LatchReturnsXXXXXForSuper() {
             string secretWord = "super";
             string guessedWord = "latch";
             string expectedAnswer = "XXXXX";
@@ -46,7 +46,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AboutReturnsYXXXYForLatch() {
+        public void GameMaster_GetAnswer_AboutReturnsYXXXYForLatch() {
             string secretWord = "latch";
             string guessedWord = "about";
             string expectedAnswer = "YXXXY";
@@ -57,7 +57,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_BuddyReturnsXXYXXForDrain() {
+        public void GameMaster_GetAnswer_BuddyReturnsXXYXXForDrain() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "drain";
             string guessedWord = "buddy";
@@ -69,7 +69,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_DandyReturnsGYYXXForDrain() {
+        public void GameMaster_GetAnswer_DandyReturnsGYYXXForDrain() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "drain";
             string guessedWord = "dandy";
@@ -81,7 +81,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AddedReturnsYYYXXForDandy() {
+        public void GameMaster_GetAnswer_AddedReturnsYYYXXForDandy() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "dandy";
             string guessedWord = "added";
@@ -93,7 +93,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AddedReturnsGGGGXForAdder() {
+        public void GameMaster_GetAnswer_AddedReturnsGGGGXForAdder() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "adder";
             string guessedWord = "added";
@@ -105,7 +105,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AddedReturnsYYXYGForDread() {
+        public void GameMaster_GetAnswer_AddedReturnsYYXYGForDread() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "dread";
             string guessedWord = "added";
@@ -117,7 +117,7 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_ThrowsErrorIfIllegalWordRrong() {
+        public void GameMaster_GetAnswer_ThrowsErrorIfIllegalWordRrong() {
             GameMaster gm = new GameMaster("right");
             Assert.Throws<InvalidOperationException>(() => gm.GetAnswer("rrong"));
         }

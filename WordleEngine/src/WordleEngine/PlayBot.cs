@@ -7,16 +7,18 @@ using System.Text;
 namespace WordleEngine
 {
     public class PlayBot {
-        private WordList AllowedGuesses { get; set; }
-        private WordList RemainingWords { get; set; }
+        private readonly WordList RemainingWords = new WordList();
 
         public PlayBot() {
-            this.AllowedGuesses = new WordList();
-            this.RemainingWords = new WordList();
+            // no setup required
         }
 
         public Word ChooseWord() {
             // To do, build the actual engine part here
+
+            /*
+             *        :-P
+             */
 
             // For now, just picks the lowest ranked remaining word
             return RemainingWords.GetLowestRankedWord();
@@ -98,7 +100,6 @@ namespace WordleEngine
                         }
                     }
 
-
                     // The solution has X of this letter
                     Fact solutionHasXCharsOfThisTypeRule = new Fact(letter, true, -1, numberOfThisLetterInSolution);
 
@@ -117,13 +118,15 @@ namespace WordleEngine
             return returnFactList;
         }
 
+        // Just for presentation
         public List<Word> GetTopFiveWords() {
             List<Word> topFiveWords = (from words in this.RemainingWords.AllowedWords
-                                      orderby words.GetRank() ascending
+                                      orderby words.Rank ascending
                                       select words).Take(5).ToList();
             return topFiveWords;
         }
 
+        // Just for presentation
         public int GetNumRemainingPossibleAnswers() {
             return this.RemainingWords.Count();
         }

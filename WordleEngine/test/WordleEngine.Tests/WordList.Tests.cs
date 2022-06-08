@@ -62,7 +62,7 @@ namespace WordleEngine.Tests
             // The most common word is ABOUT
             WordList newList = new WordList();
             Word lowestRank = newList.GetLowestRankedWord();
-            Assert.True(lowestRank.GetName().Equals("ABOUT"));
+            Assert.True(lowestRank.Name.Equals("ABOUT"));
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace WordleEngine.Tests
             WordList newList = new WordList();
             newList.RemoveWord(0);
             Word lowestRank = newList.GetLowestRankedWord();
-            Assert.True(lowestRank.GetName().Equals("OTHER"));
+            Assert.True(lowestRank.Name.Equals("OTHER"));
         }
     }
 
@@ -94,8 +94,8 @@ namespace WordleEngine.Tests
                 var errorMsg = "ERROR! A newly created AllowedWordList was missing the word ABOUT. Cannot run this test.";
                 throw new InvalidOperationException(errorMsg);
             }
-            if (!newList.AllowedWords[0].GetName().Equals("ABOUT")) {
-                string firstWord = newList.AllowedWords[0].GetName();
+            if (!newList.AllowedWords[0].Name.Equals("ABOUT")) {
+                string firstWord = newList.AllowedWords[0].Name;
                 var errorMsg = "ERROR! A newly created AllowedWordList had the word " + firstWord + " as the top ranked word. Expected ABOUT. Cannot run this test.";
                 throw new InvalidOperationException(errorMsg);
             }
@@ -129,7 +129,7 @@ namespace WordleEngine.Tests
         private readonly Fact NoAAt4 = new Fact('a', false, 4, -1);
 
         // Helper method to simplify tests below 
-        private bool applyingFactRemovesWord(Fact fact, string word) {
+        private bool ApplyingFactRemovesWord(Fact fact, string word) {
             WordList wordList = new WordList();
             List<Fact> factList = new List<Fact> { fact };
             wordList.ApplyFacts(factList);
@@ -139,49 +139,49 @@ namespace WordleEngine.Tests
         [Fact]
         // Applying ZeroA should not remove HELLO
         public void WordList_ApplyFacts_0xAExistRuleShouldNotRemoveHello() {        
-            Assert.False(applyingFactRemovesWord(ZeroA, "HELLO"));
+            Assert.False(ApplyingFactRemovesWord(ZeroA, "HELLO"));
         }
 
         [Fact]
         // Applying ZeroA should remove ABOUT
         public void WordList_ApplyFacts_0xAExistRuleShouldRemoveAbout() {
-            Assert.True(applyingFactRemovesWord(ZeroA, "ABOUT"));
+            Assert.True(ApplyingFactRemovesWord(ZeroA, "ABOUT"));
         }
 
         [Fact]
         // Applying OneA should not remove ABOUT
         public void WordList_ApplyFacts_1xAExistRuleShouldNotRemoveAbout() {
-            Assert.False(applyingFactRemovesWord(OneA, "ABOUT"));
+            Assert.False(ApplyingFactRemovesWord(OneA, "ABOUT"));
         }
 
         [Fact]
         // Applying OneA should remove HELLO
         public void WordList_ApplyFacts_1xAExistRuleShouldRemoveHello() {
-            Assert.True(applyingFactRemovesWord(OneA, "HELLO"));
+            Assert.True(ApplyingFactRemovesWord(OneA, "HELLO"));
         }
 
         [Fact]
         // Applying TwoA should not remove SALAD
         public void WordList_ApplyFacts_2xAExistRuleShouldNotRemoveSalad() {
-            Assert.False(applyingFactRemovesWord(TwoA, "SALAD"));
+            Assert.False(ApplyingFactRemovesWord(TwoA, "SALAD"));
         }
 
         [Fact]
         // Applying TwoA should remove ABOUT
         public void WordList_ApplyFacts_2xAExistRuleShouldRemoveAbout() {
-            Assert.True(applyingFactRemovesWord(TwoA, "ABOUT"));
+            Assert.True(ApplyingFactRemovesWord(TwoA, "ABOUT"));
         }
 
         [Fact]
         // Applying ThreeD should not remove ADDED
         public void WordList_ApplyFacts_3xDExistRuleShouldNotRemoveAdded() {
-            Assert.False(applyingFactRemovesWord(ThreeD, "ADDED"));
+            Assert.False(ApplyingFactRemovesWord(ThreeD, "ADDED"));
         }
 
         [Fact]
         // Applying ThreeD should remove SALAD
         public void WordList_ApplyFacts_3xDExistRuleShouldRemoveSalad() {
-            Assert.True(applyingFactRemovesWord(ThreeD, "SALAD"));
+            Assert.True(ApplyingFactRemovesWord(ThreeD, "SALAD"));
         }
 
         [Fact]
@@ -196,151 +196,151 @@ namespace WordleEngine.Tests
         [Fact]
         // Applying AExists should not remove ADDED
         public void WordList_ApplyFacts_AExistRuleShouldNotRemoveAdded() {
-            Assert.False(applyingFactRemovesWord(AExists, "ADDED"));
+            Assert.False(ApplyingFactRemovesWord(AExists, "ADDED"));
         }
 
         [Fact]
         // Applying AExists should not remove DREAM
         public void WordList_ApplyFacts_AExistRuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(AExists, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(AExists, "DREAM"));
         }
 
         [Fact]
         // Applying AExists should remove HELLO
         public void WordList_ApplyFacts_AExistRuleShouldRemoveHello() {
-            Assert.True(applyingFactRemovesWord(AExists, "HELLO"));
+            Assert.True(ApplyingFactRemovesWord(AExists, "HELLO"));
         }
 
         [Fact]
         // Applying ADoesNotExists should not remove HELLO
         public void WordList_ApplyFacts_ADoesNotExistsRuleShouldNotRemoveHello() {
-            Assert.False(applyingFactRemovesWord(ADoesNotExists, "HELLO"));
+            Assert.False(ApplyingFactRemovesWord(ADoesNotExists, "HELLO"));
         }
 
         [Fact]
         // Applying ADoesNotExists should remove ADDED
         public void WordList_ApplyFacts_ADoesNotExistsRuleShouldRemoveAdded() {
-            Assert.True(applyingFactRemovesWord(ADoesNotExists, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(ADoesNotExists, "DREAM"));
         }
 
         [Fact]
         // Applying AExistsAt0 should not remove ADDED
         public void WordList_ApplyFacts_AExistsAt0RuleShouldNotRemoveAdded() {
-            Assert.False(applyingFactRemovesWord(AExistsAt0, "ADDED"));
+            Assert.False(ApplyingFactRemovesWord(AExistsAt0, "ADDED"));
         }
 
         [Fact]
         // Applying AExistsAt0 should remove DREAM
         public void WordList_ApplyFacts_AExistsAt0RuleShouldRemoveDream() {
-            Assert.True(applyingFactRemovesWord(AExistsAt0, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(AExistsAt0, "DREAM"));
         }
 
         [Fact]
         // Applying AExistsAt1 should not remove BADGE
         public void WordList_ApplyFacts_AExistsAt1RuleShouldNotRemoveBadge() {
-            Assert.False(applyingFactRemovesWord(AExistsAt1, "BADGE"));
+            Assert.False(ApplyingFactRemovesWord(AExistsAt1, "BADGE"));
         }
 
         [Fact]
         // Applying AExistsAt1 should remove DREAM
         public void WordList_ApplyFacts_AExistsAt1RuleShouldRemoveDream() {
-            Assert.True(applyingFactRemovesWord(AExistsAt1, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(AExistsAt1, "DREAM"));
         }
 
         [Fact]
         // Applying AExistsAt2 should not remove PLATE
         public void WordList_ApplyFacts_AExistsAt2RuleShouldNotRemovePlate() {
-            Assert.False(applyingFactRemovesWord(AExistsAt2, "PLATE"));
+            Assert.False(ApplyingFactRemovesWord(AExistsAt2, "PLATE"));
         }
 
         [Fact]
         // Applying AExistsAt2 should remove DREAM
         public void WordList_ApplyFacts_AExistsAt2RuleShouldRemoveDream() {
-            Assert.True(applyingFactRemovesWord(AExistsAt2, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(AExistsAt2, "DREAM"));
         }
 
         [Fact]
         // Applying AExistsAt3 should not remove DREAM
         public void WordList_ApplyFacts_AExistsAt3RuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(AExistsAt3, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(AExistsAt3, "DREAM"));
         }
 
         [Fact]
         // Applying AExistsAt3 should remove PLATE
         public void WordList_ApplyFacts_AExistsAt3RuleShouldRemovePlate() {
-            Assert.True(applyingFactRemovesWord(AExistsAt3, "PLATE"));
+            Assert.True(ApplyingFactRemovesWord(AExistsAt3, "PLATE"));
         }
 
         [Fact]
         // Applying AExistsAt4 should not remove SALSA
         public void WordList_ApplyFacts_AExistsAt4RuleShouldNotRemoveSalsa() {
-            Assert.False(applyingFactRemovesWord(AExistsAt4, "SALSA"));
+            Assert.False(ApplyingFactRemovesWord(AExistsAt4, "SALSA"));
         }
 
         [Fact]
         // Applying AExistsAt4 should remove DREAM
         public void WordList_ApplyFacts_AExistsAt4RuleShouldRemoveDream() {
-            Assert.True(applyingFactRemovesWord(AExistsAt4, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(AExistsAt4, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt0 should not remove DREAM
         public void WordList_ApplyFacts_NoAAt0RuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(NoAAt0, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(NoAAt0, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt0 should remove ADDED
         public void WordList_ApplyFacts_NoAAt0RuleShouldRemoveAdded() {
-            Assert.True(applyingFactRemovesWord(NoAAt0, "ADDED"));
+            Assert.True(ApplyingFactRemovesWord(NoAAt0, "ADDED"));
         }
 
         [Fact]
         // Applying NoAAt1 should not remove DREAM
         public void WordList_ApplyFacts_NoAAt1RuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(NoAAt1, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(NoAAt1, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt1 should remove BADGE
         public void WordList_ApplyFacts_NoAAt1RuleShouldRemoveAbout() {
-            Assert.True(applyingFactRemovesWord(NoAAt1, "BADGE"));
+            Assert.True(ApplyingFactRemovesWord(NoAAt1, "BADGE"));
         }
 
         [Fact]
         // Applying NoAAt2 should not remove DREAM
         public void WordList_ApplyFacts_NoAAt2RuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(NoAAt2, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(NoAAt2, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt2 should remove PLATE
         public void WordList_ApplyFacts_NoAAt2RuleShouldRemovePlate() {
-            Assert.True(applyingFactRemovesWord(NoAAt2, "PLATE"));
+            Assert.True(ApplyingFactRemovesWord(NoAAt2, "PLATE"));
         }
 
         [Fact]
         // Applying NoAAt3 should not remove PLATE
         public void WordList_ApplyFacts_NoAAt3RuleShouldNotRemovePlate() {
-            Assert.False(applyingFactRemovesWord(NoAAt3, "PLATE"));
+            Assert.False(ApplyingFactRemovesWord(NoAAt3, "PLATE"));
         }
 
         [Fact]
         // Applying NoAAt3 should remove DREAM
         public void WordList_ApplyFacts_NoAAt3RuleShouldRemoveDream() {
-            Assert.True(applyingFactRemovesWord(NoAAt3, "DREAM"));
+            Assert.True(ApplyingFactRemovesWord(NoAAt3, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt4 should not remove DREAM
         public void WordList_ApplyFacts_NoAAt4RuleShouldNotRemoveDream() {
-            Assert.False(applyingFactRemovesWord(NoAAt4, "DREAM"));
+            Assert.False(ApplyingFactRemovesWord(NoAAt4, "DREAM"));
         }
 
         [Fact]
         // Applying NoAAt4 should remove SALSA
         public void WordList_ApplyFacts_NoAAt4RuleShouldRemoveSalsa() {
-            Assert.True(applyingFactRemovesWord(NoAAt4, "SALSA"));
+            Assert.True(ApplyingFactRemovesWord(NoAAt4, "SALSA"));
         }
     }
 }

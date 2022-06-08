@@ -12,7 +12,7 @@ namespace WordleEngine.Tests {
             List<Word> top5 = bot.GetTopFiveWords();
 
             string[] expected = { "ABOUT", "OTHER", "WHICH", "THEIR", "THERE" };
-            string[] actual = { top5[0].GetName(), top5[1].GetName(), top5[2].GetName(), top5[3].GetName(), top5[4].GetName() };
+            string[] actual = { top5[0].Name, top5[1].Name, top5[2].Name, top5[3].Name, top5[4].Name };
 
             Assert.Equal(actual, expected);
         }
@@ -36,6 +36,10 @@ namespace WordleEngine.Tests {
             Assert.Throws<InvalidOperationException>(() => bot.GetFacts("rrong", "XXXXX"));
         }
 
+        // Helper function, used by many test cases (below)
+        //   Returns a string of errors. If all goes to plan, it should be an empty string (i.e. no errors).
+        //   Feels ugly, but doing it this way since it allows me to write nice, clear error messages.
+        //   There's probably a better way?
         public string CheckForPlayBotGetFactsErrors(string guessedWord, string expectedPattern, string[] expectedFacts) {
             // setup
             bool passed = true;
@@ -61,7 +65,7 @@ namespace WordleEngine.Tests {
 
             // if failed, adding the actual facts to the return message
             if (!passed) {
-                returnMsg = returnMsg + "Actual facts are: ";
+                returnMsg += "Actual facts are: ";
                 foreach (Fact fact in facts) {
                     returnMsg = returnMsg + fact.Name + "; ";
                 }

@@ -2,9 +2,9 @@ using Xunit;
 
 namespace WordleEngine.Tests { 
     public class Word_Equals_Tests {
-        Word hello = new Word(1, "HELLO", 50);
-        Word hello2 = new Word(1, "HELLO", 50);
-        Word world = new Word(2, "WORLD", 53);
+        private readonly Word hello = new Word(1, "HELLO", 50);
+        private readonly Word hello2 = new Word(1, "HELLO", 50);
+        private readonly Word world = new Word(2, "WORLD", 53);
 
         [Fact]
         public void Word_Equals_HelloEqualsHello() {
