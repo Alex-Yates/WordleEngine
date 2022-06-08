@@ -69,11 +69,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_DandyReturnsYXXXXForDrain() {
+        public void GameMaster_GuessWord_DandyReturnsGYYXXForDrain() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "drain";
             string guessedWord = "dandy";
-            string expectedAnswer = "YXXXX";
+            string expectedAnswer = "GYYXX";
 
             GameMaster gm = new GameMaster(secretWord);
             string actualAnswer = gm.GetAnswer(guessedWord);
@@ -81,11 +81,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AddedReturnsXYYXXForDandy() {
+        public void GameMaster_GuessWord_AddedReturnsYYYXXForDandy() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "dandy";
             string guessedWord = "added";
-            string expectedAnswer = "XYYXX";
+            string expectedAnswer = "YYYXX";
 
             GameMaster gm = new GameMaster(secretWord);
             string actualAnswer = gm.GetAnswer(guessedWord);
@@ -93,11 +93,11 @@ namespace WordleEngine.Tests {
         }
 
         [Fact]
-        public void GameMaster_GuessWord_AddedReturnsXGGXXForAdder() {
+        public void GameMaster_GuessWord_AddedReturnsGGGGXForAdder() {
             // Interesting case. Are we handling multiple yellows correctly?
             string secretWord = "adder";
             string guessedWord = "added";
-            string expectedAnswer = "XGGXX";
+            string expectedAnswer = "GGGGX";
 
             GameMaster gm = new GameMaster(secretWord);
             string actualAnswer = gm.GetAnswer(guessedWord);
