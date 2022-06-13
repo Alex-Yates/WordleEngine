@@ -24,6 +24,17 @@ namespace WordleEngine
                 throw new InvalidOperationException(errorMsg);
             }
 
+            if (exists && (total == 0)) {
+                string errorMsg = "ERROR!: If exists, total cannot be 0.";
+                throw new InvalidOperationException(errorMsg);
+            }
+
+            if (!exists && (total != 0)) {
+                string errorMsg = "ERROR!: If not exists, total must be 0.";
+                throw new InvalidOperationException(errorMsg);
+            }
+
+
             this.Letter = Char.ToUpper(letter);
             this.Exists = exists;
             this.Position = position;  // Zero based. 0 is the first letter of the word. -1 means not sure what position.
