@@ -24,7 +24,7 @@ namespace WordleEngine {
             //   I can remove this null reference message by using the "null forgiving" operator (!) after ReadLine(), e.g. sr.ReadLine()!.Split(','); 
             //   but I don't know if this is a good idea. Is it wise to assume the file will never get accidentally deleted? 
             //   What's the cleanest way to handle this?
-            _ = sr.ReadLine().Split(','); 
+            _ = sr.ReadLine()!.Split(','); 
             
             List<Word> wordList = new List<Word>();
 
