@@ -36,11 +36,12 @@ namespace WordleEngine.Tests {
         public static TheoryData<char, bool, int, int> FactsThatShouldWork {
             get {
                 var data = new TheoryData<char, bool, int, int> {
-                    { 'A', true, -1, -1 },  // Position and Total -1 should work
-                    { 'A', true, 0, -1 },   // Position 0 should work
-                    { 'A', true, 4, -1 },   // Position 4 should work
-                    { 'A', false, -1, 0 },  // Total 0 with exists false should work
-                    { 'A', true, -1, 4 }    // Total 4 should work
+                    { 'A', true, -1, -1 },  // A exists, but don't know position or total
+                    { 'A', true, 0, -1 },   // A exists in postion 0, but there might be more
+                    { 'A', true, 4, -1 },   // A exists in postion 4, but there might be more
+                    { 'A', false, -1, 0 },  // A does not exists in the solution
+                    { 'A', true, -1, 4 }    // There are 4 As in the solution, but do not know in what position
+
                 };    
                 return data;
             }
@@ -49,13 +50,13 @@ namespace WordleEngine.Tests {
         public static TheoryData<char, bool, int, int> FactsThatShouldThrowExceptions {
             get {
                 var data = new TheoryData<char, bool, int, int> {
-                    { 'A', true, -2, -1 },  // Position -2 should not be allowed
-                    { 'A', true, 5, -1 },   // Position 5 should not be allowed
-                    { 'A', true, -1, -2 },  // Total -2 should not be allowed
-                    { 'A', true, -1, 6 },   // Total -6 should not be allowed
-                    { 'A', true, -1, 0 },   // If exists, total cannot be 0
-                    { 'A', false, -1, 1 },  // If not exists, total must be 0 (not 1)
-                    { 'A', false, -1, -1 }  // If not exists, total must be 0 (not -1)
+                    { 'A', true, -2, -1 },  // OUT OF BOUNDS: Position -2 should not be allowed
+                    { 'A', true, 5, -1 },   // OUT OF BOUNDS: Position 5 should not be allowed
+                    { 'A', true, -1, -2 },  // OUT OF BOUNDS: Total -2 should not be allowed
+                    { 'A', true, -1, 6 },   // OUT OF BOUNDS: Total -6 should not be allowed
+                    { 'A', false, -1, -1 }, // CONTRADICTION: A does not exists in any position AND I don't know how many A's exist
+                    { 'A', true, -1, 0 },   // CONTRADICTION: A exists AND total number of As is 0
+                    { 'A', false, -1, 1 },  // CONTRADICTION: A does not exists AND there is 1 A
                 };
                 return data;
             }
