@@ -59,6 +59,10 @@ namespace WordleEngine
 
         }
 
+        public override string ToString() {
+            return this.Name;
+        }
+
         private bool CheckPositionInputRange(int position) {
             if ((position < -1) || (position > 4)) {
                 return false;
