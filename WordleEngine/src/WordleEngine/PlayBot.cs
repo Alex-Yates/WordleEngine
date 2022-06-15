@@ -100,12 +100,12 @@ namespace WordleEngine
                         }
                     }
 
-                    // The solution has X of this letter
-                    Fact solutionHasXCharsOfThisTypeRule = new Fact(letter, true, -1, numberOfThisLetterInSolution);
+                    // Create the fact, assuming 0 of letter in solution (the most common scenario)
+                    Fact solutionHasXCharsOfThisTypeRule = new Fact(letter, false, -1, 0);
 
-                    // If there are zero of the letter, flipping "exists" from true to false
-                    if (numberOfThisLetterInSolution == 0) {
-                        solutionHasXCharsOfThisTypeRule = new Fact(letter, false, -1, 0);
+                    // If there are more than zero of the letter, flipping "exists" from false to true
+                    if (numberOfThisLetterInSolution != 0) {
+                        solutionHasXCharsOfThisTypeRule = new Fact(letter, true, -1, numberOfThisLetterInSolution);
                     }
 
                     // if the fact does not already exist, add them.
