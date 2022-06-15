@@ -93,9 +93,6 @@ namespace WordleEngine
              *                        +------------------+-----------------+------------------+-----------------+
              *   total 1-5 (exists)   |      true        |      false      |      false       |      false      |
              *   ---------------------+------------------+-----------------+------------------+-----------------+
-             *
-             *   * position -1: anywhere in the word
-             *   * position 0-4: in this specific position
              */
 
             // If positionIsKnown, total must be -1. (Total is only relevant when applied to a whole word, not a specific character.)
