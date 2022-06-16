@@ -7,64 +7,58 @@ namespace WordleEngine.Tests {
     public class DataValidator_ValidateAnswer_Tests {
         public DataValidator validator = new DataValidator();
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestToUpperFunction() {
-            // Validator should lower case all inputs
-            Assert.Equal("AAHED", validator.ValidateAnswer("AaHed"));
+        [Theory]
+        [MemberData(nameof(ValidWords), DisableDiscoveryEnumeration = true)]
+        public void DataValidator_ValidateAnswer_TestValidWords(string word) {
+            Assert.Equal(word, validator.ValidateAnswer(word));
         }
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestFirstLegalWordAlphabetically() {
-            // The word "aahed" should be allowed by the validator
-            Assert.Equal("AAHED", validator.ValidateAnswer("aahed"));
+        [Theory]
+        [MemberData(nameof(ValidWordsPairsWithMessedUpCasing), DisableDiscoveryEnumeration = true)]
+        public void DataValidator_ValidateAnswer_TestUpperCasing(string upperCaseWord, string messedUpCaseWord) {
+            Assert.Equal(upperCaseWord, validator.ValidateAnswer(messedUpCaseWord));
         }
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestLastLegalWordAlphabetically() {
-            // The word "zymic" should be allowed by the validator
-            Assert.Equal("ZYMIC", validator.ValidateAnswer("zymic"));
+        [Theory]
+        [MemberData(nameof(InvalidWords), DisableDiscoveryEnumeration = true)]
+        public void DataValidator_ValidateAnswer_TestInvalidWords(string invalidWord) {
+            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer(invalidWord));
         }
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestHello() {
-            // The word "hello" should be allowed by the validator
-            Assert.Equal("HELLO", validator.ValidateAnswer("hello"));
+        public static TheoryData<string> ValidWords {
+            get {
+                var data = new TheoryData<string> {
+                    { "AAHED" },  // First word alphabetically, last word by rank
+                    { "ZYMIC" },  // Last word alpabetically
+                    { "ABOUT" }   // First word by rank
+                };
+                return data;
+            }
         }
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestWorld() {
-            // The word "world" should be allowed by the validator
-            Assert.Equal("WORLD", validator.ValidateAnswer("world"));
+        public static TheoryData<string, string> ValidWordsPairsWithMessedUpCasing {
+            get {
+                var data = new TheoryData<string, string> {
+                    { "HELLO", "hello" },
+                    { "WORLD", "World" },
+                    { "ABOUT", "aBoUt" }
+                };
+                return data;
+            }
         }
 
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestFirstLegalWordByRanky() {
-            // The word "aahed" should be allowed by the validator
-            Assert.Equal("ABOUT", validator.ValidateAnswer("ABOUT"));
-        }
-
-        [Fact]
-        public void DataValidator_ValidateAnswer_TestLastLegalWordByRank() {
-            // The word "zymic" should be allowed by the validator
-            Assert.Equal("AAHED", validator.ValidateAnswer("AAHED"));
-        }
-
-        [Fact]
-        public void DataValidator_ValidateAnswer_IllegalGarbageWordShouldThrowException() {
-            // Invalid 5 character strings should be rejected
-            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("xxxxx"));
-        }
-
-        [Fact]
-        public void DataValidator_ValidateAnswer_IllegalLongWordShouldThrowException() {
-            // Words with more than 5 letters should be rejected
-            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("enormous"));
-        }
-
-        [Fact]
-        public void DataValidator_ValidateAnswer_IllegalShortWordShouldThrowException() {
-            // Words with less than 5 letters should be rejected
-            Assert.Throws<InvalidOperationException>(() => validator.ValidateAnswer("mini"));
+        public static TheoryData<string> InvalidWords {
+            get {
+                var data = new TheoryData<string> {
+                    { "xxxxx" },    // Not a word, lower case
+                    { "XXXXX" },    // Not a word, upper case
+                    { "enormous" }, // Real word but too long, lower case
+                    { "ENORMOUS" }, // Real word but too long, upper case
+                    { "tiny" },     // Real word but too short, lower case
+                    { "TINY" },     // Real word but too short, upper case
+                };
+                return data;
+            }
         }
     }
 }
