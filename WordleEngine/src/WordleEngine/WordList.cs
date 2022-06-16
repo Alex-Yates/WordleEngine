@@ -19,11 +19,16 @@ namespace WordleEngine {
         private static List<Word> ConvertCSVToAllowedWordsList(string strFilePath) {
             StreamReader sr = new StreamReader(strFilePath);
 
-            // The following generates a "CS8602 Deference of a possible Null Reference" warning
-            //   This happens because the file might be empty, so the string created by ReadLine might be null.
-            //   I can remove this null reference message by using the "null forgiving" operator (!) after ReadLine(), e.g. sr.ReadLine()!.Split(','); 
-            //   but I don't know if this is a good idea. Is it wise to assume the file will never get accidentally deleted? 
-            //   What's the cleanest way to handle this?
+            /*
+             *  Without the "null forgiving" operator (!) after ReadLine() in the line below,  the 
+             *    it generates a "CS8602 Deference of a possible Null Reference" warning.
+             *    
+             *    This happens because the file might be empty, so the string created by ReadLine 
+             *    might be null.
+             *    
+             *    Not sure if this is the best way to remove the warning or not. Perhaps there's a 
+             *    better way to fix it. Maybe I should put in some sort of check?
+             */
             _ = sr.ReadLine()!.Split(','); 
             
             List<Word> wordList = new List<Word>();

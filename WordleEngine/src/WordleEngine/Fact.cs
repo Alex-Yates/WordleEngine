@@ -16,12 +16,12 @@ namespace WordleEngine
 
             // Verifying the parameters
 
-            if (!CheckPositionInputRange(position) || !CheckTotalInputRange(total)) {
+            if (!PositionIsWithinValidRange(position) || !TotalIsWithinValidRange(total)) {
                 string errorMsg = "ERROR!: Attempted to create a fact with either the position or total outside the expected range. Letter was: " + letter + ", Exists was: " + exists + ", Position was: " + position + ", Total was: " + total + ".";
                 throw new InvalidOperationException(errorMsg);
             }
 
-            if (!CheckParametersDoNotContradictEachOther(exists, position, total)) {
+            if (ParametersContradictEachOther(exists, position, total)) {
                 string errorMsg = "ERROR!: Parameters contradict each other. Letter was: " + letter + ", Exists was: " + exists + ", Position was: " + position + ", Total was: " + total + ".";
                 throw new InvalidOperationException(errorMsg);
             }
@@ -63,21 +63,21 @@ namespace WordleEngine
             return this.Name;
         }
 
-        private bool CheckPositionInputRange(int position) {
+        private bool PositionIsWithinValidRange(int position) {
             if ((position < -1) || (position > 4)) {
                 return false;
             }
             return true;
         }
 
-        private bool CheckTotalInputRange(int total) {
+        private bool TotalIsWithinValidRange(int total) {
             if ((total < -1) || (total > 5)) {
                 return false;
             }
             return true;
         }
 
-        private bool CheckParametersDoNotContradictEachOther(bool exists, int position, int total) {
+        private bool ParametersContradictEachOther(bool exists, int position, int total) {
 
             bool positionIsKnown = !(position == -1);
 
@@ -97,21 +97,21 @@ namespace WordleEngine
 
             // If positionIsKnown, total must be -1. (Total is only relevant when applied to a whole word, not a specific character.)
             if (positionIsKnown && (total != -1)) {
-                return false;
+                return true;
             }
 
             // If !positionIsKnown and exists, total must not be 0. (It's a contradiction to claim both that the letter exists, and that there are zero instances of the letter.)
             if ((!positionIsKnown && exists) && (total == 0)) {
-                return false;
+                return true;
             }
 
             // If !positionIsKnown and !exists, total must be 0. (If we know the letter does not exist in any position, there must be zero of that letter.)
             if ((!positionIsKnown && !exists) && (total != 0)) {
-                return false;
+                return true;
             }
 
             // Otherwise...
-            return true;
+            return false;
         }
     }
 }
