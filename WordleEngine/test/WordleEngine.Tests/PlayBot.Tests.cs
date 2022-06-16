@@ -36,18 +36,25 @@ namespace WordleEngine.Tests {
             Assert.Throws<InvalidOperationException>(() => bot.GetFacts("rrong", "XXXXX"));
         }
 
-        // Helper function, used by many test cases (below)
+        [Theory]
+        [MemberData(nameof(WordPatternFactCombos), DisableDiscoveryEnumeration = true)]
+        public void Playbot_GetFacts_TestWordPatternCombosGenerateExpectedFacts(string guessedWord, string expectedPattern, string[] expectedFacts) {
+            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
+            Assert.True(failureMessage.Equals(""), failureMessage);
+        }
+
+        // Helper function, used by Playbot_GetFacts_TestWordPatternCombosGenerateExpectedFacts
         //   Returns a string of errors. If all goes to plan, it should be an empty string (i.e. no errors).
         //   Feels ugly, but doing it this way since it allows me to write nice, clear error messages.
         //   There's probably a better way?
-        public string CheckForPlayBotGetFactsErrors(string guessedWord, string expectedPattern, string[] expectedFacts) {
+        public string CheckForPlayBotGetFactsErrors(string guessedWord, string pattern, string[] expectedFacts) {
             // setup
             bool passed = true;
             string returnMsg = "";
             PlayBot bot = new PlayBot();
 
             // the method under test
-            List<Fact> facts = bot.GetFacts(guessedWord, expectedPattern);
+            List<Fact> facts = bot.GetFacts(guessedWord, pattern);
 
             // Checking the total number of facts matches
             if (facts.Count != expectedFacts.Length) {
@@ -75,187 +82,41 @@ namespace WordleEngine.Tests {
             return returnMsg;
         }
 
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXXPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "XXXXX";
-            string[] expectedFacts = {
-                "0x H exist",
-                "0x E exist",
-                "0x L exist",
-                "0x O exist"
-            };
+        public static TheoryData<string, string, string[]> WordPatternFactCombos {
+            get {
+                // Creating the expected fact lists first, because they cannot be cleanly created inline within the TheoryData<string[]> constructor
+                string[] hello_xxxxx_facts = { "0x H exist", "0x E exist", "0x L exist", "0x O exist" };
+                string[] hello_yxxxx_facts = { "H exists", "H does not exist in position 0", "0x E exist", "0x L exist", "0x O exist" };
+                string[] world_xxyxx_facts = { "0x W exist", "0x O exist", "R exists", "R does not exist in position 2", "0x L exist", "0x D exist" };
+                string[] world_xxxxy_facts = { "0x W exist", "0x O exist", "0x R exist", "0x L exist", "D exists", "D does not exist in position 4" };
+                string[] world_gxxxx_facts = { "W exists in position 0", "0x O exist", "0x R exist", "0x L exist", "0x D exist" };
+                string[] world_xxgxx_facts = { "0x W exist", "0x O exist", "R exists in position 2", "0x L exist", "0x D exist" };
+                string[] world_xxxxg_facts = { "0x W exist", "0x O exist", "0x R exist", "0x L exist", "D exists in position 4" };
+                string[] hello_gxxxy_facts = { "H exists in position 0", "0x E exist", "0x L exist", "O exists", "O does not exist in position 4" };
+                string[] hello_xxxyx_facts = { "0x H exist", "0x E exist", "1x L exist", "L exists", "L does not exist in position 3", "0x O exist" };
+                string[] hello_xyxgx_facts = { "0x H exist", "E exists", "E does not exist in position 1", "1x L exist", "L exists in position 3", "0x O exist" };
+                string[] hello_yyyyy_facts = { "H exists", "H does not exist in position 0", "E exists", "E does not exist in position 1", "L exists", 
+                                               "L does not exist in position 2", "L does not exist in position 3", "O exists", "O does not exist in position 4" };
+                string[] hello_ggggg_facts = { "H exists in position 0", "E exists in position 1", "L exists in position 2", "L exists in position 3", 
+                                               "O exists in position 4" };
 
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForYXXXXPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "YXXXX";
-            string[] expectedFacts = {
-                "H exists",
-                "H does not exist in position 0",
-                "0x E exist",
-                "0x L exist",
-                "0x O exist"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForGXXXYPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "GXXXY";
-            string[] expectedFacts = {
-                "H exists in position 0",
-                "0x E exist",
-                "0x L exist",
-                "O exists",
-                "O does not exist in position 4"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXXYXXPattern() {
-            string guessedWord = "WORLD";
-            string expectedPattern = "XXYXX";
-            string[] expectedFacts = {
-                "0x W exist",
-                "0x O exist",
-                "R exists",
-                "R does not exist in position 2",
-                "0x L exist",
-                "0x D exist"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXXGXXPattern() {
-            string guessedWord = "WORLD";
-            string expectedPattern = "XXGXX";
-            string[] expectedFacts = {
-                "0x W exist",
-                "0x O exist",
-                "R exists in position 2",
-                "0x L exist",
-                "0x D exist"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXYPattern() {
-            string guessedWord = "WORLD";
-            string expectedPattern = "XXXXY";
-            string[] expectedFacts = {
-                "0x W exist",
-                "0x O exist",
-                "0x R exist",
-                "0x L exist",
-                "D exists",
-                "D does not exist in position 4",
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXXXXGPattern() {
-            string guessedWord = "WORLD";
-            string expectedPattern = "XXXXG";
-            string[] expectedFacts = {
-                "0x W exist",
-                "0x O exist",
-                "0x R exist",
-                "0x L exist",
-                "D exists in position 4"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForXYXGXPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "XYXGX";
-            string[] expectedFacts = {
-                "0x H exist",
-                "E exists",
-                "E does not exist in position 1",
-                "1x L exist",
-                "L exists in position 3",
-                "0x O exist"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForYYYYYPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "YYYYY";
-            string[] expectedFacts = {
-                "H exists",
-                "H does not exist in position 0",
-                "E exists",
-                "E does not exist in position 1",
-                "L exists",
-                "L does not exist in position 2",
-                "L does not exist in position 3",
-                "O exists",
-                "O does not exist in position 4"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsForGGGGGPattern() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "GGGGG";
-            string[] expectedFacts = {
-                "H exists in position 0",
-                "E exists in position 1",
-                "L exists in position 2",
-                "L exists in position 3",
-                "O exists in position 4"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
-        }
-
-        [Fact]
-        public void Playbot_GetFacts_ReturnsCorrectFactsWithDoubleLetters() {
-            string guessedWord = "HELLO";
-            string expectedPattern = "XXXYX";
-            string[] expectedFacts = {
-                "0x H exist",
-                "0x E exist",
-                "1x L exist",
-                "L exists",
-                "L does not exist in position 3",
-                "0x O exist"
-            };
-
-            string failureMessage = CheckForPlayBotGetFactsErrors(guessedWord, expectedPattern, expectedFacts);
-            Assert.True(failureMessage.Equals(""), failureMessage);
+                // PlayBot.GetFacts() test data
+                var data = new TheoryData<string, string, string[]> {
+                    { "HELLO", "XXXXX", hello_xxxxx_facts }, // XXXXX - 5x X
+                    { "HELLO", "YXXXX", hello_yxxxx_facts }, // YXXXX - 1x Y (first letter)
+                    { "WORLD", "XXYXX", world_xxyxx_facts }, // XXYXX - 1x Y (middle letter)
+                    { "WORLD", "XXXXY", world_xxxxy_facts }, // XXXXY - 1x Y (last letter)
+                    { "WORLD", "GXXXX", world_gxxxx_facts }, // GXXXX - 1x G (first letter)
+                    { "WORLD", "XXGXX", world_xxgxx_facts }, // XXGXX - 1x G (middle letter)
+                    { "WORLD", "XXXXG", world_xxxxg_facts }, // XXXXG - 1x G (last letter)
+                    { "HELLO", "GXXXY", hello_gxxxy_facts }, // GXXXY - 1x G + 1x Y
+                    { "HELLO", "XXXYX", hello_xxxyx_facts }, // XXXYX - 1x Y, 1x X for a duplicate Y letter
+                    { "HELLO", "XYXGX", hello_xyxgx_facts }, // XYXGX - 1x G, 1x Y, 1x X for a duplicate G letter
+                    { "HELLO", "YYYYY", hello_yyyyy_facts }, // YYYYY - 5x Y
+                    { "HELLO", "GGGGG", hello_ggggg_facts }, // GGGGG - 5x G: Winner winner chicken dinner!
+                };
+                return data;
+            }
         }
     }
 }
