@@ -9,33 +9,27 @@ namespace WordleEngine.Tests
         public WordList wordlist = new WordList();
 
         [Fact]
-        public void WordList_Contains_IncludesFirstWordAlphabetically() {
-            // Checks the first word (alphabetically) is in the approved words list
-            Assert.True(wordlist.Contains("AAHED"));
-        }
-
-        [Fact]
-        public void WordList_Contains_IncludesFirstWordByRank() {
-            // Checks the first word (alphabetically) is in the approved words list
-            Assert.True(wordlist.Contains("ABOUT"));
-        }
-
-        [Fact]
-        public void WordList_Contains_IncludesLastWordAlphabetically() {
-            // Checks the last word (alphabetically) is in the approved words list
-            Assert.True(wordlist.Contains("ZYMIC"));
-        }
-
-        [Fact]
-        public void WordList_Contains_IncludesLastWordByRank() {
-            // Checks the last word (alphabetically) is in the approved words list
-            Assert.True(wordlist.Contains("AAHED"));
-        }
-
-        [Fact]
-        public void WordList_Contains_DoesNotContainFakeWord() {
+        public void WordList_Contains_ReturnsFalseForFakeWord() {
             // Checks the total number of words is corect
             Assert.False(wordlist.Contains("illegalword"));
+        }
+
+        [Theory]
+        [MemberData(nameof(ValidWords), DisableDiscoveryEnumeration = true)]
+        public void WordList_Contains_ReturnsTrueForValidWords(string word) {
+            Assert.True(wordlist.Contains(word));
+        }
+
+        public static TheoryData<string> ValidWords {
+            get {
+                var data = new TheoryData<string> {
+                    { "ABOUT" },  // First word by rank
+                    { "AAHED" },  // First word alphabetically, last word by rank
+                    { "ZYMIC" },  // Last word alpabetically
+                    { "TESTS" }   // Random word from somewhere in the middle
+                };
+                return data;
+            }
         }
     }
 
@@ -59,7 +53,7 @@ namespace WordleEngine.Tests
     public class WordList_GetLowestRankedWord_Tests {
         [Fact]
         public void WordList_GetLowestRankedWord_ReturnsAboutForNewList() {
-            // The most common word is ABOUT
+            // The first word by rank is ABOUT
             WordList newList = new WordList();
             Word lowestRank = newList.GetLowestRankedWord();
             Assert.True(lowestRank.Name.Equals("ABOUT"));
@@ -67,7 +61,7 @@ namespace WordleEngine.Tests
 
         [Fact]
         public void WordList_GetLowestRankedWord_ReturnsOtherIfAboutIsRemoved() {
-            // The second most common word is OTHER
+            // The second second word by rank is OTHER
             WordList newList = new WordList();
             newList.RemoveWord(0);
             Word lowestRank = newList.GetLowestRankedWord();
@@ -82,7 +76,7 @@ namespace WordleEngine.Tests
             int numBefore = newList.Count();
             newList.RemoveWord(0);
             int numAfter = newList.Count();
-            Assert.Equal(numBefore, (numAfter + 1));
+            Assert.Equal(numAfter, (numBefore - 1));
         }
 
         [Fact]
@@ -109,15 +103,8 @@ namespace WordleEngine.Tests
     }
 
     public class WordList_ApplyFacts_Tests {
-        // Iterating through a long list of test cases to to verify whether given Facts correctly remove/leave Words in a WordList.
-        [Theory]
-        [MemberData(nameof(WordList_ApplyFacts_TestData), DisableDiscoveryEnumeration = true)]
-        public void WordList_ApplyFacts_RemovesTheCorrectWords(Fact fact, string word, bool expected) {
-            Assert.Equal(expected, ApplyingFactRemovesWord(fact, word));
-        }
-
         [Fact]
-        // Applying FourD should remove ALL THE WORDS
+        // There are no 5 letter words with 4 Ds, so applying FourD should remove ALL THE WORDS
         public void WordList_ApplyFacts_4xDExistRuleShouldRemoveAllWords() {
             WordList wordList = new WordList();
             List<Fact> factList = new List<Fact> { FourD };
@@ -125,7 +112,14 @@ namespace WordleEngine.Tests
             Assert.True(wordList.Count() == 0);
         }
 
-        // Helper method to simplify test above 
+        // Iterating through a long list of test cases to to verify whether given Facts correctly remove/leave Words in a WordList.
+        [Theory]
+        [MemberData(nameof(WordList_ApplyFacts_TestData), DisableDiscoveryEnumeration = true)]
+        public void WordList_ApplyFacts_RemovesTheCorrectWords(Fact fact, string word, bool expected) {
+            Assert.Equal(expected, ApplyingFactRemovesWord(fact, word));
+        }
+
+        // Helper method to simplify WordList_ApplyFacts_RemovesTheCorrectWords
         private bool ApplyingFactRemovesWord(Fact fact, string word) {
             WordList wordList = new WordList();
             List<Fact> factList = new List<Fact> { fact };
